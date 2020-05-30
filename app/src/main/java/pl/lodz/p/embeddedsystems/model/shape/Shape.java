@@ -1,5 +1,7 @@
 package pl.lodz.p.embeddedsystems.model.shape;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 
 /**
@@ -43,5 +45,12 @@ abstract class Shape {
      */
     public double getCenterY() {
         return this.center.y;
+    }
+
+    /**
+     * Ustawienie nowego centrum kształtu.
+     */
+    public void setCenter(PointF center) {
+        this.center = center;
     }
 }
