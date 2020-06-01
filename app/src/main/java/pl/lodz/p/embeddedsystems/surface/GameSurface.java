@@ -10,6 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 
+import pl.lodz.p.embeddedsystems.data.Sensors;
 import pl.lodz.p.embeddedsystems.model.shape.Ball;
 import pl.lodz.p.embeddedsystems.thread.GameThread;
 
@@ -33,6 +34,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      */
     private Ball ball;
 
+    private Sensors sensors;
+
     public GameSurface(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -40,6 +43,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         adjustShape();
         point = new PointF(100,100);
         setFocusable(true);
+
+        sensors = new Sensors(context);
     }
 
     private void adjustShape() {
@@ -91,6 +96,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      * Aktualizacja położenia środku kształtu (w tym przypadku kuli).
      */
     public void update() {
+        float[] accelerometer = sensors.getAccelerometer();
+        point.x += accelerometer[0];
+        point.y += accelerometer[1];
         ball.update(point);
     }
 
