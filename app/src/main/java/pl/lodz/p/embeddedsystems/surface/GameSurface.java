@@ -4,15 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.Window;
 import android.view.WindowManager;
-
 
 import pl.lodz.p.embeddedsystems.data.Sensors;
 import pl.lodz.p.embeddedsystems.model.shape.Ball;
@@ -20,18 +17,13 @@ import pl.lodz.p.embeddedsystems.thread.GameThread;
 
 /**
  * "Powierzchnia", na której uruchomiona zostaje właściwa aplikacja z grą.
- *  Tworzy własny wątek przez implementowanie interfejsu Runnable.
+ * Tworzy własny wątek przez implementowanie interfejsu Runnable.
  */
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     /**
      * Właściwy wątek gry.
      */
     private GameThread gameThread;
-
-    /**
-     * Kształt gracza.
-     */
-    private PointF point;
 
     /**
      * Kształt gracza.
@@ -47,7 +39,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
         adjustShape();
-        point = new PointF(100,100);
         setFocusable(true);
 
         sensors = new Sensors(context);
@@ -62,7 +53,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.RED);
-        ball = new Ball(100,100,45, paint);
+        ball = new Ball(100, 100, 45, paint);
+        ball.setMinValues(0, 0);
     }
 
     // nadpisane metody interfejsu SurfaceHolder.Callback
@@ -76,7 +68,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        ball.setMaxValues(width, height);
+        final int rotation = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        sensors.setRotation(rotation);
     }
 
     @Override
@@ -98,7 +92,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                point.set(event.getX(), event.getY());
+                ball.moveTo(event.getX(), event.getY());
         }
         return true;
     }
@@ -108,24 +102,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      */
     public void update() {
         float[] accelerometerValues = sensors.getAccelerometerValues();
-        int ballRadius = (int) ball.getRadius();
-        point.x = Math.max(
-                screenBounds.left + ballRadius,
-                Math.min(screenBounds.right - ballRadius, point.x - accelerometerValues[0])
-        );
-        point.y = Math.max(
-                screenBounds.top + ballRadius,
-                Math.min(screenBounds.bottom - ballRadius, point.y + accelerometerValues[1])
-        );
-
-        ball.update(point);
+        ball.moveBy(accelerometerValues[0], accelerometerValues[1]);
     }
 
     /**
      * Rysowanie każdego wybranego przez użytkownika położenia.
      */
     @Override
-    public void draw (Canvas canvas) {
+    public void draw(Canvas canvas) {
         super.draw(canvas);
         ball.drawShape(canvas);
     }

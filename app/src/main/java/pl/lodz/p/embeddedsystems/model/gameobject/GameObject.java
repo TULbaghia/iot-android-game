@@ -11,10 +11,10 @@ public interface GameObject {
      * Rysowanie wyznaczonego kształtu.
      * @param canvas przyjmuje warstwę dla obiektu.
      */
-    public void drawShape(Canvas canvas);
+    void drawShape(Canvas canvas);
 
     /**
      * Aktualizacja stanu wczytanego obiektu.
      */
-    public void update(PointF point);
+    void update(PointF point);
 }

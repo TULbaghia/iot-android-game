@@ -34,7 +34,7 @@ public class GameThread extends Thread {
      */
     private boolean running = false;
 
-    public GameThread(SurfaceHolder surfaceHolder, GameSurface gameSurface){
+    public GameThread(SurfaceHolder surfaceHolder, GameSurface gameSurface) {
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameSurface = gameSurface;
@@ -56,9 +56,11 @@ public class GameThread extends Thread {
                 surfaceHolder.unlockCanvasAndPost(canvas);
             } catch (Exception e) {
                 e.printStackTrace();
-            } frameTime = (System.nanoTime() - frameStartTime) / 1000000;
+            }
+            frameTime = (System.nanoTime() - frameStartTime) / 1000000;
             if (frameTime < MAX_TIME_PER_FRAME) {
-                try { Thread.sleep(MAX_TIME_PER_FRAME - frameTime);
+                try {
+                    Thread.sleep(MAX_TIME_PER_FRAME - frameTime);
                 } catch (InterruptedException e) {
                     System.out.println("Błąd");
                 }

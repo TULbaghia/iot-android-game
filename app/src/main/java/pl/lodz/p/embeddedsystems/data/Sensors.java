@@ -5,10 +5,16 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.view.Surface;
 
 public class Sensors implements SensorEventListener {
 
     private float[] accelerometerValues;
+
+    /**
+     * Reprezentacja obortu ekranu przez Surface.ROTATION_*
+     */
+    private int rotation;
 
     public Sensors(Context context) {
         accelerometerValues = new float[] {0,0,0};
@@ -26,6 +32,7 @@ public class Sensors implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             accelerometerValues = sensorEvent.values;
+            applyRotation();
         }
     }
 
@@ -36,5 +43,40 @@ public class Sensors implements SensorEventListener {
 
     public float[] getAccelerometerValues() {
         return accelerometerValues;
+    }
+
+    /**
+     * Ustawia obrót ekranu.
+     *
+     * @param rotation wartość z enum Surface.ROTATION_*.
+     */
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
+    }
+
+    /**
+     * Uwzględnia obrót ekranu przy zwracaniu wyników.
+     */
+    private void applyRotation() {
+        float tmp;
+        switch (this.rotation) {
+            case Surface.ROTATION_180:
+                break;
+            case Surface.ROTATION_0:
+                this.accelerometerValues[0] = -this.accelerometerValues[0];
+                break;
+            case Surface.ROTATION_90:
+                tmp = this.accelerometerValues[0];
+                this.accelerometerValues[0] = this.accelerometerValues[1];
+                this.accelerometerValues[1] = tmp;
+                break;
+            case Surface.ROTATION_270:
+                tmp = this.accelerometerValues[0];
+                this.accelerometerValues[0] = -this.accelerometerValues[1];
+                this.accelerometerValues[1] = -tmp;
+                break;
+            default:
+                break;
+        }
     }
 }
