@@ -8,10 +8,10 @@ import android.hardware.SensorManager;
 
 public class Sensors implements SensorEventListener {
 
-    float[] accelerometer;
+    private float[] accelerometerValues;
 
     public Sensors(Context context) {
-        accelerometer = new float[] {0,0,0};
+        accelerometerValues = new float[] {0,0,0};
 
         SensorManager sensorManager =
                 (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -25,7 +25,7 @@ public class Sensors implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            accelerometer = sensorEvent.values;
+            accelerometerValues = sensorEvent.values;
         }
     }
 
@@ -34,7 +34,7 @@ public class Sensors implements SensorEventListener {
 
     }
 
-    public float[] getAccelerometer() {
-        return accelerometer;
+    public float[] getAccelerometerValues() {
+        return accelerometerValues;
     }
 }

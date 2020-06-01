@@ -5,9 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
 
 
 import pl.lodz.p.embeddedsystems.data.Sensors;
@@ -36,6 +40,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     private Sensors sensors;
 
+    Rect screenBounds;
+
     public GameSurface(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -45,6 +51,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
 
         sensors = new Sensors(context);
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        screenBounds = new Rect(
+                0, 0,
+                displayMetrics.widthPixels, displayMetrics.heightPixels
+        );
     }
 
     private void adjustShape() {
@@ -96,9 +107,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      * Aktualizacja położenia środku kształtu (w tym przypadku kuli).
      */
     public void update() {
-        float[] accelerometer = sensors.getAccelerometer();
-        point.x += accelerometer[0];
-        point.y += accelerometer[1];
+        float[] accelerometerValues = sensors.getAccelerometerValues();
+        int ballRadius = (int) ball.getRadius();
+        point.x = Math.max(
+                screenBounds.left + ballRadius,
+                Math.min(screenBounds.right - ballRadius, point.x - accelerometerValues[0])
+        );
+        point.y = Math.max(
+                screenBounds.top + ballRadius,
+                Math.min(screenBounds.bottom - ballRadius, point.y + accelerometerValues[1])
+        );
+
         ball.update(point);
     }
 
