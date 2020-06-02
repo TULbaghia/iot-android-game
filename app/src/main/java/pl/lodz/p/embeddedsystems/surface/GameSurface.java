@@ -5,17 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.shapes.Shape;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
-import pl.lodz.p.embeddedsystems.data.Sensors;
+import pl.lodz.p.embeddedsystems.MainActivity;
+import pl.lodz.p.embeddedsystems.sensormanager.sensors.AccelerometerSensor;
 import pl.lodz.p.embeddedsystems.model.shape.Ball;
 import pl.lodz.p.embeddedsystems.model.shape.Score;
 import pl.lodz.p.embeddedsystems.thread.GameThread;
@@ -49,22 +46,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      */
     private Score score;
 
-    private Sensors sensors;
+    private AccelerometerSensor accelerometerSensor;
 
     Rect screenBounds;
 
-    public GameSurface(Context context) {
-        super(context);
+    public GameSurface() {
+        super(MainActivity.getContext());
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         screenBounds = new Rect(
                 0, 0,
                 displayMetrics.widthPixels, displayMetrics.heightPixels
         );
         setStartingObjects();
         setFocusable(true);
-        sensors = new Sensors(context);
+        accelerometerSensor = new AccelerometerSensor(getContext());
     }
 
     private void setStartingObjects() {
@@ -93,7 +90,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         ball.setMaxValues(width, height);
         final int rotation = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-        sensors.setRotation(rotation);
+        accelerometerSensor.setRotation(rotation);
     }
 
     @Override
@@ -124,7 +121,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      * Aktualizacja położenia środku kształtu (w tym przypadku kuli).
      */
     public void update() {
-        float[] accelerometerValues = sensors.getAccelerometerValues();
+        float[] accelerometerValues = accelerometerSensor.getAccelerometerValues();
         ball.moveBy(accelerometerValues[0], accelerometerValues[1]);
         if (isInRange()) { score.update();}
     }

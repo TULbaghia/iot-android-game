@@ -1,4 +1,4 @@
-package pl.lodz.p.embeddedsystems.data;
+package pl.lodz.p.embeddedsystems.sensormanager.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.view.Surface;
 
-public class Sensors implements SensorEventListener {
+public class AccelerometerSensor implements SensorEventListener {
 
     private float[] accelerometerValues;
 
@@ -16,7 +16,7 @@ public class Sensors implements SensorEventListener {
      */
     private int rotation;
 
-    public Sensors(Context context) {
+    public AccelerometerSensor(Context context) {
         accelerometerValues = new float[] {0,0,0};
 
         SensorManager sensorManager =
