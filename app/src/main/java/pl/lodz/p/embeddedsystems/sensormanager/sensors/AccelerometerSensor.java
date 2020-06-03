@@ -9,6 +9,7 @@ import android.view.Surface;
 
 import androidx.annotation.NonNull;
 
+
 public class AccelerometerSensor implements SensorEventListener {
 
     private float[] accelerometerValues;
@@ -34,7 +35,6 @@ public class AccelerometerSensor implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             accelerometerValues = sensorEvent.values;
-            applyRotation();
         }
     }
 

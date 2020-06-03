@@ -6,7 +6,7 @@ import android.graphics.RectF;
 /**
  * Klasa zawierająca opis kształtu.
  */
-abstract class Shape {
+public abstract class Shape {
     /**
      * Zmienne zawierające środek kształtu.
      */
@@ -23,7 +23,7 @@ abstract class Shape {
      * @param x zmienna opisująca współrzędną na osi x.
      * @param y zmienna opisująca współrzędną na osi y.
      */
-    Shape(float x, float y) {
+    public Shape(float x, float y) {
         this.center = new PointF(x, y);
         this.allowedValues = new RectF();
     }

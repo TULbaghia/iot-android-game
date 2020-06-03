@@ -13,9 +13,12 @@ import android.view.WindowManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import pl.lodz.p.embeddedsystems.model.lock.GameLock;
+import pl.lodz.p.embeddedsystems.model.lock.GameLockState;
 import pl.lodz.p.embeddedsystems.sensormanager.SensorController;
 import pl.lodz.p.embeddedsystems.model.shape.Ball;
 import pl.lodz.p.embeddedsystems.model.shape.Score;
+import pl.lodz.p.embeddedsystems.sensormanager.orientation.OrientationCalibrator;
 import pl.lodz.p.embeddedsystems.thread.GameThread;
 
 import static java.lang.Math.pow;
@@ -46,6 +49,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      */
     private Score score;
 
+    private GameLock gameLock;
+
     private SensorController sensorController;
 
     Rect screenBounds;
@@ -65,9 +70,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void setStartingObjects() {
-        ball = new Ball(100, 100, 45, getPaint(Paint.Style.FILL, Color.RED));
+        ball = new Ball(screenBounds.width() / 2, screenBounds.height() - 45, 45, getPaint(Paint.Style.FILL, Color.RED));
         correctCustomShape = new Ball(screenBounds.width() / 2, screenBounds.height() / 2, screenBounds.height() / 6, getPaint(Paint.Style.FILL, Color.BLUE));
         score = new Score(screenBounds.left + screenBounds.width() / 10, screenBounds.left + screenBounds.width() / 10, getPaint(Paint.Style.FILL, Color.WHITE));
+        gameLock = new GameLock(screenBounds.left + screenBounds.width() / 15, screenBounds.centerY() - screenBounds.height() / 4, getPaint(Paint.Style.FILL, Color.WHITE));
         ball.setMinValues(0, 0);
     }
 
@@ -107,23 +113,34 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     // poruszanie kulą poprzez ruch palcem po ekranie
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_MOVE:
-                ball.moveTo(event.getX(), event.getY());
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//            case MotionEvent.ACTION_MOVE:
+//                ball.moveTo(event.getX(), event.getY());
+//        }
+//        return true;
+//    }
 
     /**
      * Aktualizacja położenia środku kształtu (w tym przypadku kuli).
      */
     public void update() {
+
         float[] accelerometerValues = sensorController.getAccelerometer().getAccelerometerValues();
-        ball.moveBy(accelerometerValues[0], accelerometerValues[1]);
-        if (isInRange()) { score.update();}
+        float[] magnometerValues = sensorController.getMagnometer().getMagnometerValues();
+        OrientationCalibrator.calibrateData(magnometerValues, accelerometerValues);
+
+        gameLock.updateState((int)(Math.toDegrees( OrientationCalibrator.getOrientatedData()[0])+360)%360);
+        if (gameLock.getLockState() == GameLockState.UNLOCKED) {
+            float pitch = OrientationCalibrator.getOrientatedData()[1] - OrientationCalibrator.getOrientationInitial()[1];
+            float roll = OrientationCalibrator.getOrientatedData()[2] - OrientationCalibrator.getOrientationInitial()[2];
+            ball.moveBy(10 * roll * screenBounds.width() / 1000f, -15 * pitch * screenBounds.height() / 1000f);
+            if (isInRange()) {
+                score.update();
+            }
+        }
     }
 
     /**
@@ -135,6 +152,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         correctCustomShape.drawShape(canvas);
         ball.drawShape(canvas);
         score.drawShape(canvas);
+        gameLock.drawShape(canvas);
     }
 
     /**

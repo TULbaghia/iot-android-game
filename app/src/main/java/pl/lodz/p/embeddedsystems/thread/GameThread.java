@@ -5,6 +5,8 @@ import android.view.SurfaceHolder;
 
 import pl.lodz.p.embeddedsystems.surface.GameSurface;
 
+import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
+
 /**
  * Instancje klasy GameThread reprezentują aktualnie przetwarzany wątek gry.
  */
@@ -51,16 +53,23 @@ public class GameThread extends Thread {
             frameStartTime = System.nanoTime();
             try {
                 canvas = surfaceHolder.lockCanvas();
-                gameSurface.update();
-                gameSurface.draw(canvas);
-                surfaceHolder.unlockCanvasAndPost(canvas);
+                synchronized (surfaceHolder) {
+                    gameSurface.update();
+                    gameSurface.draw(canvas);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-            frameTime = (System.nanoTime() - frameStartTime) / 1000000;
-            if (frameTime < MAX_TIME_PER_FRAME) {
+            } finally {
                 try {
-                    Thread.sleep(MAX_TIME_PER_FRAME - frameTime);
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            frameTime = (System.nanoTime() - frameStartTime);
+            if (frameTime < SENSOR_DELAY_GAME) {
+                try {
+                    Thread.sleep(SENSOR_DELAY_GAME - frameTime);
                 } catch (InterruptedException e) {
                     System.out.println("Błąd");
                 }
