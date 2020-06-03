@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import androidx.annotation.NonNull;
+
 import pl.lodz.p.embeddedsystems.model.gameobject.GameObject;
 
 /**
@@ -28,7 +30,7 @@ public class Ball extends Shape implements GameObject {
      * @param y      zmienna opisująca współrzędną na osi y.
      * @param radius zmienna opisująca promień kuli.
      */
-    public Ball(float x, float y, float radius, Paint style) {
+    public Ball(float x, float y, float radius, @NonNull Paint style) {
         super(x, y);
         this.radius = radius;
         this.style = style;

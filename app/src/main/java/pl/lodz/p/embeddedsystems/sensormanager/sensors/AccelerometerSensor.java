@@ -7,6 +7,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.view.Surface;
 
+import androidx.annotation.NonNull;
+
 public class AccelerometerSensor implements SensorEventListener {
 
     private float[] accelerometerValues;
@@ -16,8 +18,8 @@ public class AccelerometerSensor implements SensorEventListener {
      */
     private int rotation;
 
-    public AccelerometerSensor(Context context) {
-        accelerometerValues = new float[] {0,0,0};
+    public AccelerometerSensor(@NonNull Context context) {
+        accelerometerValues = new float[]{0, 0, 0};
 
         SensorManager sensorManager =
                 (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);

@@ -1,4 +1,5 @@
 package pl.lodz.p.embeddedsystems.sensormanager;
 
-public class SensorManager {
+public enum SensorType {
+    ACCELEROMETER
 }
