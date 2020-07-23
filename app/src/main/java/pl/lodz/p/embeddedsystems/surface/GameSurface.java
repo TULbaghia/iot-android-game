@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -57,6 +59,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public GameSurface(@NotNull Context context) {
         super(context);
+        init(context);
+    }
+
+    public GameSurface(@NotNull Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        init(context);
+    }
+
+    private void init(@NotNull Context context) {
         sensorController = new SensorController(context);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
@@ -67,6 +78,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         );
         setStartingObjects();
         setFocusable(true);
+        setZOrderMediaOverlay(true);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
     }
 
     private void setStartingObjects() {
