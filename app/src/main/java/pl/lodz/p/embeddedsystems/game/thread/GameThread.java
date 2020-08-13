@@ -1,9 +1,9 @@
-package pl.lodz.p.embeddedsystems.thread;
+package pl.lodz.p.embeddedsystems.game.thread;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import pl.lodz.p.embeddedsystems.surface.GameSurface;
+import pl.lodz.p.embeddedsystems.ui.GameSurfaceView;
 
 import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
 
@@ -12,19 +12,14 @@ import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
  */
 public class GameThread extends Thread {
     /**
-     * Czas na klatkę.
-     */
-    private static final int MAX_TIME_PER_FRAME = 1000 / 60;
-
-    /**
      * Aplikowany do SurfaceView - pozwala na dopasowanie parametrów powierzchni.
      */
-    private SurfaceHolder surfaceHolder;
+    private final SurfaceHolder surfaceHolder;
 
     /**
      * Surface z właściwym wątkiem.
      */
-    private GameSurface gameSurface;
+    private GameSurfaceView gameSurface;
 
     /**
      * Warstwa na której następuje rysowanie.
@@ -36,7 +31,7 @@ public class GameThread extends Thread {
      */
     private boolean running = false;
 
-    public GameThread(SurfaceHolder surfaceHolder, GameSurface gameSurface) {
+    public GameThread(SurfaceHolder surfaceHolder, GameSurfaceView gameSurface) {
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameSurface = gameSurface;
@@ -54,7 +49,7 @@ public class GameThread extends Thread {
             try {
                 canvas = surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
-                    gameSurface.update();
+//                    gameSurface.update();
                     gameSurface.draw(canvas);
                 }
             } catch (Exception e) {
@@ -71,7 +66,7 @@ public class GameThread extends Thread {
                 try {
                     Thread.sleep(SENSOR_DELAY_GAME - frameTime);
                 } catch (InterruptedException e) {
-                    System.out.println("Błąd");
+                    e.printStackTrace();
                 }
             }
         }

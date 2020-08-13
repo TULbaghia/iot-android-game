@@ -1,2 +1,2 @@
-rootProject.name='Embedded Systems'
 include ':app'
+rootProject.name = "Systemy wbudowane"
