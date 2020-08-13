@@ -8,12 +8,14 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import pl.lodz.p.embeddedsystems.model.lock.GameLock;
 import pl.lodz.p.embeddedsystems.model.lock.GameLockState;
@@ -80,13 +82,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
         setZOrderMediaOverlay(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
+
+//        Intent panorama = new Intent(this.getContext(), PanoramaActivity.class);
+//        this.getContext().startActivity(panorama);
     }
 
     private void setStartingObjects() {
-        ball = new Ball(screenBounds.width() / 2, screenBounds.height() - 45, 45, getPaint(Paint.Style.FILL, Color.RED));
-        correctCustomShape = new Ball(screenBounds.width() / 2, screenBounds.height() / 2, screenBounds.height() / 6, getPaint(Paint.Style.FILL, Color.BLUE));
-        score = new Score(screenBounds.left + screenBounds.width() / 10, screenBounds.left + screenBounds.width() / 10, getPaint(Paint.Style.FILL, Color.WHITE));
-        gameLock = new GameLock(screenBounds.left + screenBounds.width() / 15, screenBounds.centerY() - screenBounds.height() / 4, getPaint(Paint.Style.FILL, Color.WHITE));
+        ball = new Ball(screenBounds.width() / 2f, screenBounds.height() - 45, 45, getPaint(Paint.Style.FILL, Color.RED));
+        correctCustomShape = new Ball(screenBounds.width() / 2f, screenBounds.height() / 2f, screenBounds.height() / 6f, getPaint(Paint.Style.FILL, Color.BLUE));
+        score = new Score(screenBounds.left + screenBounds.width() / 10f, screenBounds.left + screenBounds.width() / 10f, getPaint(Paint.Style.FILL, Color.WHITE));
+        gameLock = new GameLock(screenBounds.left + screenBounds.width() / 15f, screenBounds.centerY() - screenBounds.height() / 4f, getPaint(Paint.Style.FILL, Color.WHITE));
         ball.setMinValues(0, 0);
     }
 
@@ -161,11 +166,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public void draw(Canvas canvas) {
-        super.draw(canvas);
-        correctCustomShape.drawShape(canvas);
-        ball.drawShape(canvas);
-        score.drawShape(canvas);
-        gameLock.drawShape(canvas);
+        if(null != canvas) {
+            super.draw(canvas);
+            correctCustomShape.drawShape(canvas);
+            ball.drawShape(canvas);
+            score.drawShape(canvas);
+            gameLock.drawShape(canvas);
+        }
     }
 
     /**

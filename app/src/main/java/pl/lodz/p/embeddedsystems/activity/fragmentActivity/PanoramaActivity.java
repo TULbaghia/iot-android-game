@@ -1,38 +1,34 @@
-package pl.lodz.p.embeddedsystems;
+package pl.lodz.p.embeddedsystems.activity.fragmentActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
-import com.panoramagl.PLICamera;
+import androidx.annotation.Nullable;
+
 import com.panoramagl.PLImage;
 import com.panoramagl.PLManager;
 import com.panoramagl.PLSphericalPanorama;
 import com.panoramagl.utils.PLUtils;
 
-public class MainActivity extends Activity {
+import pl.lodz.p.embeddedsystems.R;
+
+public class PanoramaActivity extends Activity {
+
     private PLManager plManager;
 
-    /**
-     * Ustawia kontener aplikacji oraz jego zależności.
-     *
-     * @param savedInstanceState zapewnia najnowszą wersję.
-     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.game_surface);
 
         setupPanorama();
     }
 
+    /**
+     * Załadowanie panoramy.
+     */
     private void setupPanorama() {
-
         plManager = new PLManager(this);
         plManager.setContentView((ViewGroup) findViewById(R.id.panorama));
         plManager.onCreate();
@@ -51,4 +47,3 @@ public class MainActivity extends Activity {
         plManager.setPanorama(panorama);
     }
 }
-

@@ -5,20 +5,17 @@
     android:id="@+id/gameSurfaceLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.lodz.p.embeddedsystems.MainActivity">
-
+    tools:context="pl.lodz.p.embeddedsystems.activity.MainActivity"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:id="@+id/panorama"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <pl.lodz.p.embeddedsystems.surface.GameSurface
+            android:id="@+id/gameSurface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
-    <pl.lodz.p.embeddedsystems.surface.GameSurface
-        android:id="@+id/gameSurface"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-</FrameLayout>
+</LinearLayout>
