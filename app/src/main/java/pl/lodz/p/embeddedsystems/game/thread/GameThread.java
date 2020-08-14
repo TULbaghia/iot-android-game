@@ -9,6 +9,7 @@ import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
 
 /**
  * Instancje klasy GameThread reprezentują aktualnie przetwarzany wątek gry.
+ * TODO: Podczas działania aplikacji, może dojść do zablokowania odświeżenia zablokowanego canvas'a przez co wyrzuca błąd (non-critical)
  */
 public class GameThread extends Thread {
     /**
@@ -31,10 +32,10 @@ public class GameThread extends Thread {
      */
     private boolean running = false;
 
-    public GameThread(SurfaceHolder surfaceHolder, GameSurfaceView gameSurface) {
+    public GameThread(GameSurfaceView gameSurface) {
         super();
-        this.surfaceHolder = surfaceHolder;
         this.gameSurface = gameSurface;
+        this.surfaceHolder = gameSurface.getHolder();
     }
 
     /**

@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.main_activity);
+        this.setContentView(R.layout.main_activity);
         forceFullScreen();
 
         /// Ładowanie fragmentów- już nie potrzebne, odbywa się przez XML
@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void forceFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Objects.requireNonNull(getWindow().getInsetsController()).hide(WindowInsets.Type.statusBars());
+            Objects.requireNonNull(this.getWindow().getInsetsController()).hide(WindowInsets.Type.statusBars());
         } else {
-            getWindow().setFlags(
+            this.getWindow().setFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN
             );

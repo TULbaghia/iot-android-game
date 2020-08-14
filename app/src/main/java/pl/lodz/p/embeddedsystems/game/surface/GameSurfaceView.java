@@ -15,28 +15,24 @@ import pl.lodz.p.embeddedsystems.game.thread.GameThread;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
+    /**
+     * Wątek gry, odświeżajacy planszę.
+     */
     private GameThread gameThread;
 
     public GameSurfaceView(Context context) {
         super(context);
-        getHolder().addCallback(this);
-        gameThread = new GameThread(getHolder(), this);
-        getHolder().setFormat(PixelFormat.TRANSPARENT);
+        init();
     }
 
     public GameSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        getHolder().addCallback(this);
-        gameThread = new GameThread(getHolder(), this);
-        getHolder().setFormat(PixelFormat.TRANSPARENT);
+        init();
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        if(null != canvas) {
-            super.draw(canvas);
-            canvas.drawCircle(100, 100, 100, getPaint(Paint.Style.FILL, Color.RED));
-        }
+    private void init() {
+        this.getHolder().addCallback(this);
+        this.getHolder().setFormat(PixelFormat.TRANSPARENT);
     }
 
     private Paint getPaint(Paint.Style style, Integer color) {
@@ -46,9 +42,26 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return paint;
     }
 
+    public void update() {
+
+    }
+
+    // -=-=-=-=- >>>SurfaceView -=-=-=-=-
+
+    @Override
+    public void draw(Canvas canvas) {
+        if(null != canvas) {
+            super.draw(canvas);
+            canvas.drawCircle(100, 100, 100, getPaint(Paint.Style.FILL, Color.RED));
+        }
+    }
+
+    // -=-=-=-=- <<<SurfaceView -=-=-=-=-
+    // -=-=-=-=- >>>SurfaceHolder.Callback -=-=-=-=-
+
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-        gameThread = new GameThread(getHolder(), this);
+        gameThread = new GameThread(this);
         gameThread.setRunning(true);
         gameThread.start();
     }
@@ -65,9 +78,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 gameThread.setRunning(false);
                 gameThread.join();
                 break;
-            } catch (Exception e) {
-                System.out.println("Wyjątek.");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
+
+    // -=-=-=-=- <<<SurfaceHolder.Callback -=-=-=-=-
 }

@@ -16,22 +16,43 @@ import com.panoramagl.utils.PLUtils;
 
 import pl.lodz.p.embeddedsystems.R;
 
+/**
+ * Aktywność (Fragment) odpowiadająca za wyświetlanie panoramy jako tło aplikacji
+ */
 public class PanoramaFragment extends Fragment {
 
+    /**
+     * Tworzy nową instację obiektu.
+     *
+     * @return zwraca stworzoną instancję
+     */
     public static PanoramaFragment newInstance() {
         return new PanoramaFragment();
     }
 
+    /**
+     * Tworzy widok panoramy z szablonu panorama_fragment.
+     *
+     * @param inflater           pozwala załadować xml aby otrzymać widok
+     * @param container          grupa widoków
+     * @param savedInstanceState referencja do obiektu tworzonego w onCreate
+     * @return widok zawierający panoramę
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.panorama_fragment, container, false);
+        View view = inflater.inflate(R.layout.panorama_fragment, container, true);
 
         setupPanorama(view);
 
         return view;
     }
 
+    /**
+     * Ustawia panoramę.
+     *
+     * @param view widok dla którego ustawić panoramę
+     */
     private void setupPanorama(View view) {
         PLManager plManager = new PLManager(this.getContext());
         plManager.setContentView((ViewGroup) view);

@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 
 import pl.lodz.p.embeddedsystems.R;
 
+/**
+ * @deprecated Automatycznie wygenerowane
+ */
 public class MainFragment extends Fragment {
 
     private MainViewModel mViewModel;
