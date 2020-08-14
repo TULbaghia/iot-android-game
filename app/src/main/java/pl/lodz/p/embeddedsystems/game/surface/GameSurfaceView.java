@@ -1,10 +1,11 @@
-package pl.lodz.p.embeddedsystems.ui;
+package pl.lodz.p.embeddedsystems.game.surface;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -15,8 +16,16 @@ import pl.lodz.p.embeddedsystems.game.thread.GameThread;
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameThread gameThread;
+
     public GameSurfaceView(Context context) {
         super(context);
+        getHolder().addCallback(this);
+        gameThread = new GameThread(getHolder(), this);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
+    }
+
+    public GameSurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
         getHolder().setFormat(PixelFormat.TRANSPARENT);

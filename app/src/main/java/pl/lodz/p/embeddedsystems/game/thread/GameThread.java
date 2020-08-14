@@ -3,7 +3,7 @@ package pl.lodz.p.embeddedsystems.game.thread;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import pl.lodz.p.embeddedsystems.ui.GameSurfaceView;
+import pl.lodz.p.embeddedsystems.game.surface.GameSurfaceView;
 
 import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
 

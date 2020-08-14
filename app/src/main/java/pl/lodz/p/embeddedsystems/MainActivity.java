@@ -4,15 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 
 import java.util.Objects;
-
-import pl.lodz.p.embeddedsystems.ui.GameSurfaceView;
-import pl.lodz.p.embeddedsystems.ui.PanoramaFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,13 +20,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
         forceFullScreen();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.panorama, PanoramaFragment.newInstance())
-                    .commitNow();
-
-            this.addContentView(new GameSurfaceView(this), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
+        /// Ładowanie fragmentów- już nie potrzebne, odbywa się przez XML
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.panorama, PanoramaFragment.newInstance())
+//                    .commitNow();
+//
+//            this.addContentView(new GameSurfaceView(this), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//        }
     }
 
     /**

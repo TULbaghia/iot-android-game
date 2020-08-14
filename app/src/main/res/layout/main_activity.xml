@@ -9,11 +9,21 @@
     <FrameLayout
         android:id="@+id/panorama"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/gameSurface"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
+        <fragment
+            android:name="pl.lodz.p.embeddedsystems.ui.PanoramaFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/gameSurface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <pl.lodz.p.embeddedsystems.game.surface.GameSurfaceView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 </FrameLayout>

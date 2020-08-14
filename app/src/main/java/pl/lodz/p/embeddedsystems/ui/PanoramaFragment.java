@@ -44,7 +44,7 @@ public class PanoramaFragment extends Fragment {
         plManager.startSensorialRotation();
 
         PLSphericalPanorama panorama = new PLSphericalPanorama();
-        panorama.setImage(new PLImage(PLUtils.getBitmap(this.getContext(), R.raw.stars_black_night_sky), false));
+        panorama.setImage(new PLImage(PLUtils.getBitmap(this.getContext(), R.raw.galaxy), false));
         float pitch = 5f;
         float yaw = 0f;
         float zoomFactor = 0.8f;
