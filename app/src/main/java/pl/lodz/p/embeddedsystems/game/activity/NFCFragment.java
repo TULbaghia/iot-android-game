@@ -86,7 +86,9 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
     @Override
     public void onPause() {
         super.onPause();
-        nfcAdapter.disableForegroundDispatch(this.getActivity());
+        if (null != nfcAdapter) {
+            nfcAdapter.disableForegroundDispatch(this.getActivity());
+        }
     }
 
     /**
@@ -95,7 +97,9 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
     @Override
     public void onResume() {
         super.onResume();
-        nfcAdapter.enableForegroundDispatch(this.getActivity(), pendingIntent, null, null);
+        if (null != nfcAdapter) {
+            nfcAdapter.enableForegroundDispatch(this.getActivity(), pendingIntent, null, null);
+        }
     }
 
     // -=-=-=-=- <<<Fragment -=-=-=-=-
@@ -136,6 +140,7 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
 
     /**
      * Obsługa zdarzeń NFC
+     *
      * @param tag Tag nfc
      */
     private void handleTag(Tag tag) {
