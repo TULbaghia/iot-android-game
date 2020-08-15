@@ -41,7 +41,7 @@ public class PanoramaFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.panorama_fragment, container, true);
+        View view = inflater.inflate(R.layout.panorama_fragment, container, false);
 
         setupPanorama(view);
 

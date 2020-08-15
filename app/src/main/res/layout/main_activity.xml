@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/panoramaFragment"
             android:name="pl.lodz.p.embeddedsystems.ui.PanoramaFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -23,7 +24,14 @@
         android:layout_height="match_parent">
 
         <pl.lodz.p.embeddedsystems.game.surface.GameSurfaceView
+            android:id="@+id/GameSurfaceView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/NFCFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.activity.NFCFragmentActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </FrameLayout>
 </FrameLayout>

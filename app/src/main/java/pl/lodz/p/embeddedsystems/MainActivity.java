@@ -8,26 +8,27 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
+/**
+ * Główna aktywność aplikacji.
+ */
 public class MainActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+    /**
+     * Propowanie xml odbywa się przed onCreate głównej aktywności,
+     * używamy tego aby powiadomić obserwatorów.
+     */
+    PropertyChangeSupport propertyChangeSupport;
 
-        this.setContentView(R.layout.main_activity);
-        forceFullScreen();
-
-        /// Ładowanie fragmentów- już nie potrzebne, odbywa się przez XML
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.panorama, PanoramaFragment.newInstance())
-//                    .commitNow();
-//
-//            this.addContentView(new GameSurfaceView(this), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//        }
+    /**
+     * Przy instancjonowaniu klasy dodajemy obiekt jako bean.
+     */
+    public MainActivity() {
+        propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     /**
@@ -44,4 +45,38 @@ public class MainActivity extends AppCompatActivity {
             );
         }
     }
+
+    // -=-=-=-=- >>>AppCompatActivity -=-=-=-=-
+
+    /**
+     * Wykonywane przy ładowaniu aplikacji z xml.
+     *
+     * @param savedInstanceState referencja do obiektu tworzonego w onCreate
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        this.setContentView(R.layout.main_activity);
+        forceFullScreen();
+
+        propertyChangeSupport.firePropertyChange(
+                new PropertyChangeEvent(this, this.getClass().getName(), null, "onCreate")
+        );
+    }
+
+    // -=-=-=-=- <<<AppCompatActivity -=-=-=-=-
+    // -=-=-=-=- >>>PropertyChangeSupport -=-=-=-=-
+
+    /**
+     * Dodajemy obserwatorów dla tej klasy.
+     *
+     * @param propertyChangeListener objekt implementujący PropertyChangeListener
+     */
+    public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
+        propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+    }
+
+    // -=-=-=-=- <<<PropertyChangeSupport -=-=-=-=-
 }

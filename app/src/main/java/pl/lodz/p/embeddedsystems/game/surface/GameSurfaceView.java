@@ -50,7 +50,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void draw(Canvas canvas) {
-        if(null != canvas) {
+        if (null != canvas) {
             super.draw(canvas);
             canvas.drawCircle(100, 100, 100, getPaint(Paint.Style.FILL, Color.RED));
         }
