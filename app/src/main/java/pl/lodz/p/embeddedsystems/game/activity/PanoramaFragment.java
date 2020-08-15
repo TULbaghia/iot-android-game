@@ -1,4 +1,4 @@
-package pl.lodz.p.embeddedsystems.ui;
+package pl.lodz.p.embeddedsystems.game.activity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,15 +20,6 @@ import pl.lodz.p.embeddedsystems.R;
  * Aktywność (Fragment) odpowiadająca za wyświetlanie panoramy jako tło aplikacji
  */
 public class PanoramaFragment extends Fragment {
-
-    /**
-     * Tworzy nową instację obiektu.
-     *
-     * @return zwraca stworzoną instancję
-     */
-    public static PanoramaFragment newInstance() {
-        return new PanoramaFragment();
-    }
 
     /**
      * Tworzy widok panoramy z szablonu panorama_fragment.
