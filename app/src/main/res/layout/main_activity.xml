@@ -13,7 +13,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/panoramaFragment"
-            android:name="pl.lodz.p.embeddedsystems.ui.PanoramaFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.activity.PanoramaFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
@@ -42,7 +42,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/accelerometerSensorFragment"
-            android:name="pl.lodz.p.embeddedsystems.game.activity.AccelerometerSensor"
+            android:name="pl.lodz.p.embeddedsystems.game.activity.AccelerometerSensorFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </FrameLayout>

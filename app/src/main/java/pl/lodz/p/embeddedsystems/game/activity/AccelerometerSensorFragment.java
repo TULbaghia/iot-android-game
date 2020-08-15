@@ -21,7 +21,7 @@ import pl.lodz.p.embeddedsystems.MainActivity;
 import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
-public class AccelerometerSensor extends Fragment implements SensorEventListener {
+public class AccelerometerSensorFragment extends Fragment implements SensorEventListener {
 
     SensorManager sensorManager = null;
 
