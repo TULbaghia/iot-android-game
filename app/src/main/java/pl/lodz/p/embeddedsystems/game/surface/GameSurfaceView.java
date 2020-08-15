@@ -2,16 +2,19 @@ package pl.lodz.p.embeddedsystems.game.surface;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Arrays;
+
+import pl.lodz.p.embeddedsystems.MainActivity;
 import pl.lodz.p.embeddedsystems.game.thread.GameThread;
+import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -19,6 +22,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * Wątek gry, odświeżajacy planszę.
      */
     private GameThread gameThread;
+
+    GameSurfaceViewModel gameSurfaceViewModel = null;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -33,29 +38,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private void init() {
         this.getHolder().addCallback(this);
         this.getHolder().setFormat(PixelFormat.TRANSPARENT);
-    }
 
-    private Paint getPaint(Paint.Style style, Integer color) {
-        Paint paint = new Paint();
-        paint.setStyle(style);
-        paint.setColor(color);
-        return paint;
-    }
+        this.gameSurfaceViewModel = new ViewModelProvider((MainActivity) this.getContext()).get(GameSurfaceViewModel.class);
 
-    public void update() {
-
+        gameSurfaceViewModel.getMagnetometerValues().observe((MainActivity) this.getContext(), x -> System.out.println("MAGNETOMETER: " + Arrays.toString(x)));
+        gameSurfaceViewModel.getAccelerometerValues().observe((MainActivity) this.getContext(), x -> System.out.println("ACCELEROMETER: " + Arrays.toString(x)));
     }
 
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-
-
-    float mv = 0.25f;
 
     @Override
     public void draw(Canvas canvas) {
         if (null != canvas) {
             super.draw(canvas);
-            mv+= .25f;
-            canvas.drawCircle(100+mv, 100+mv, 100, getPaint(Paint.Style.FILL, Color.RED));
         }
     }
 

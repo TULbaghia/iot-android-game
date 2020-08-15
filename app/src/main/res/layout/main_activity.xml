@@ -33,5 +33,17 @@
             android:name="pl.lodz.p.embeddedsystems.game.activity.NFCFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/magneticSensorFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.activity.MagneticSensorFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/accelerometerSensorFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.activity.AccelerometerSensor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </FrameLayout>
 </FrameLayout>
