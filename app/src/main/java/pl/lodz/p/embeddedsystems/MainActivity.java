@@ -2,6 +2,7 @@ package pl.lodz.p.embeddedsystems;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
@@ -64,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
         propertyChangeSupport.firePropertyChange(
                 new PropertyChangeEvent(this, this.getClass().getName(), null, "onCreate")
         );
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        propertyChangeSupport.firePropertyChange(new PropertyChangeEvent(this, this.getClass().getName(), null, intent));
     }
 
     // -=-=-=-=- <<<AppCompatActivity -=-=-=-=-

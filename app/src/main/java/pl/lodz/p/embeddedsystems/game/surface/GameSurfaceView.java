@@ -48,11 +48,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-
 
+    float mv = 0.25f;
+
     @Override
     public void draw(Canvas canvas) {
         if (null != canvas) {
             super.draw(canvas);
-            canvas.drawCircle(100, 100, 100, getPaint(Paint.Style.FILL, Color.RED));
+            mv+= .25f;
+            canvas.drawCircle(100+mv, 100+mv, 100, getPaint(Paint.Style.FILL, Color.RED));
         }
     }
 

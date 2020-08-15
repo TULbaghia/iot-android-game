@@ -30,7 +30,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/NFCFragment"
-            android:name="pl.lodz.p.embeddedsystems.game.activity.NFCFragmentActivity"
+            android:name="pl.lodz.p.embeddedsystems.game.activity.NFCFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </FrameLayout>
