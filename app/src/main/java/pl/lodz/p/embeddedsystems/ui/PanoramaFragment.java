@@ -35,7 +35,7 @@ public class PanoramaFragment extends Fragment {
      *
      * @param inflater           pozwala załadować xml aby otrzymać widok
      * @param container          grupa widoków
-     * @param savedInstanceState referencja do obiektu tworzonego w onCreate
+     * @param savedInstanceState referencja do obiektu podawanego przez system w onCreate
      * @return widok zawierający panoramę
      */
     @Nullable

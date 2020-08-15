@@ -32,21 +32,6 @@ public class MainActivity extends AppCompatActivity {
         propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
-    /**
-     * Wymuś użycie trybu pełnego ekranu.
-     * W zależności od wersji systemu używo starego lub nowego API.
-     */
-    private void forceFullScreen() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Objects.requireNonNull(this.getWindow().getInsetsController()).hide(WindowInsets.Type.statusBars());
-        } else {
-            this.getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN
-            );
-        }
-    }
-
     // -=-=-=-=- >>>AppCompatActivity -=-=-=-=-
 
     /**
@@ -86,4 +71,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // -=-=-=-=- <<<PropertyChangeSupport -=-=-=-=-
+
+    /**
+     * Wymuś użycie trybu pełnego ekranu.
+     * W zależności od wersji systemu używo starego lub nowego API.
+     */
+    private void forceFullScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Objects.requireNonNull(this.getWindow().getInsetsController()).hide(WindowInsets.Type.statusBars());
+        } else {
+            this.getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+            );
+        }
+    }
 }

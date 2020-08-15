@@ -28,14 +28,28 @@ import pl.lodz.p.embeddedsystems.game.surface.GameSurfaceView;
  */
 public class NFCFragment extends Fragment implements PropertyChangeListener {
 
+    /**
+     * Referencja do planszy gry.
+     */
     GameSurfaceView gameSurfaceView = null;
 
+    /**
+     * Adapter NFC.
+     */
     NfcAdapter nfcAdapter = null;
 
+    /**
+     * Referencja do tokenu utrzymywanego przez system.
+     */
     PendingIntent pendingIntent = null;
 
     // -=-=-=-=- >>>Fragment -=-=-=-=-
 
+    /**
+     * Wykonywane przy tworzeniu fragmentu.
+     *
+     * @param savedInstanceState referencja do obiektu podawanego przez system w onCreate
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,18 +66,32 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
 
     }
 
+    /**
+     * Podczepienie layoutu pod widok.
+     *
+     * @param inflater           pozwala załadować xml aby otrzymać widok
+     * @param container          grupa widoków
+     * @param savedInstanceState referencja do obiektu podawanego przez system w onCreate
+     * @return widok nfc
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.nfc_fragment, container, false);
     }
 
+    /**
+     * W momencie zatrzymania działania aplikacji zatrzymujemy szukanie tagów NFC.
+     */
     @Override
     public void onPause() {
         super.onPause();
         nfcAdapter.disableForegroundDispatch(this.getActivity());
     }
 
+    /**
+     * W momencie wznowienia działania aplikacji przywracamy szukanie tagów NFC.
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -73,6 +101,11 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
     // -=-=-=-=- <<<Fragment -=-=-=-=-
     // -=-=-=-=- >>>PropertyChangeListener -=-=-=-=-
 
+    /**
+     * Obserwator dla zdarzeń.
+     *
+     * @param propertyChangeEvent zdarzenie w aplikacji.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
         if (propertyChangeEvent.getSource() == this.getContext()
@@ -81,7 +114,7 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
             if (propertyChangeEvent.getNewValue().equals("onCreate")) {
                 MainActivity mainActivity = (MainActivity) this.getContext();
 
-                this.gameSurfaceView = (GameSurfaceView) mainActivity.findViewById(R.id.GameSurfaceView);
+                this.gameSurfaceView = mainActivity.findViewById(R.id.GameSurfaceView);
 
                 pendingIntent = PendingIntent.getActivity(this.getContext(), 0,
                         new Intent(this.getContext(), this.getContext().getClass())
@@ -101,10 +134,14 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
     }
     // -=-=-=-=- <<<PropertyChangeListener -=-=-=-=-
 
+    /**
+     * Obsługa zdarzeń NFC
+     * @param tag Tag nfc
+     */
     private void handleTag(Tag tag) {
         byte[] cheatTag = new byte[]{-87, -46, 22, -76};
 
-        if(Arrays.equals(tag.getId(), cheatTag)) {
+        if (Arrays.equals(tag.getId(), cheatTag)) {
             Toast.makeText(this.getContext(), "Wykryto CHEAT_TAG", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this.getContext(), "Wykryto zły CHEAT_TAG", Toast.LENGTH_LONG).show();
