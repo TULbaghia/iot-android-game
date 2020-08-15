@@ -10,6 +10,7 @@ import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
 /**
  * Instancje klasy GameThread reprezentują aktualnie przetwarzany wątek gry.
  * TODO: Podczas działania aplikacji, może dojść do zablokowania odświeżenia zablokowanego canvas'a przez co wyrzuca błąd (non-critical)
+ * TODO: @up java.lang.IllegalArgumentException: canvas object must be the same instance that was previously returned by lockCanvas
  */
 public class GameThread extends Thread {
     /**
