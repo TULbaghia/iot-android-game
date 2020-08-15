@@ -12,6 +12,8 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<float[]> accelerometerValues;
 
+    private MutableLiveData<Boolean> cheatModeEnabled;
+
 
     public GameSurfaceViewModel(@NonNull Application application) {
         super(application);
@@ -19,16 +21,23 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
 
     public MutableLiveData<float[]> getMagnetometerValues() {
-        if (this.magnetometerValues == null) {
-            this.magnetometerValues = new MutableLiveData<>();
+        if (null == this.magnetometerValues) {
+            this.magnetometerValues = new MutableLiveData<>(new float[3]);
         }
         return this.magnetometerValues;
     }
 
     public MutableLiveData<float[]> getAccelerometerValues() {
-        if (this.accelerometerValues == null) {
-            this.accelerometerValues = new MutableLiveData<>();
+        if (null == this.accelerometerValues) {
+            this.accelerometerValues = new MutableLiveData<>(new float[3]);
         }
         return this.accelerometerValues;
+    }
+
+    public MutableLiveData<Boolean> getCheatModeEnabled() {
+        if (null == this.cheatModeEnabled) {
+            this.cheatModeEnabled = new MutableLiveData<>(false);
+        }
+        return cheatModeEnabled;
     }
 }

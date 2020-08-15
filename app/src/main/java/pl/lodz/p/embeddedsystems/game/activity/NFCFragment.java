@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -21,7 +22,7 @@ import java.util.Objects;
 
 import pl.lodz.p.embeddedsystems.MainActivity;
 import pl.lodz.p.embeddedsystems.R;
-import pl.lodz.p.embeddedsystems.game.surface.GameSurfaceView;
+import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
 /**
  * Fragment odpowiadający za działanie NFC
@@ -31,7 +32,7 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
     /**
      * Referencja do planszy gry.
      */
-    GameSurfaceView gameSurfaceView = null;
+    GameSurfaceViewModel gameSurfaceViewModel = null;
 
     /**
      * Adapter NFC.
@@ -116,9 +117,7 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
                 && propertyChangeEvent.getPropertyName().equals(Objects.requireNonNull(this.getContext()).getClass().getName())) {
 
             if (propertyChangeEvent.getNewValue().equals("onCreate")) {
-                MainActivity mainActivity = (MainActivity) this.getContext();
-
-                this.gameSurfaceView = mainActivity.findViewById(R.id.GameSurfaceView);
+                this.gameSurfaceViewModel = new ViewModelProvider((MainActivity) this.getContext()).get(GameSurfaceViewModel.class);
 
                 pendingIntent = PendingIntent.getActivity(this.getContext(), 0,
                         new Intent(this.getContext(), this.getContext().getClass())
@@ -131,7 +130,7 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
                 if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())
                         || NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())
                         || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-                    handleTag((Tag) Objects.requireNonNull(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)));
+                    handleTag(Objects.requireNonNull(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)));
                 }
             }
         }
@@ -147,7 +146,10 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
         byte[] cheatTag = new byte[]{-87, -46, 22, -76};
 
         if (Arrays.equals(tag.getId(), cheatTag)) {
-            Toast.makeText(this.getContext(), "Wykryto CHEAT_TAG", Toast.LENGTH_LONG).show();
+            boolean isCheatMode = Objects.equals(this.gameSurfaceViewModel.getCheatModeEnabled().getValue(), false);
+            this.gameSurfaceViewModel.getCheatModeEnabled().setValue(isCheatMode);
+
+            Toast.makeText(this.getContext(), (isCheatMode ? "CheatMode został włączony" : "CheatMode został wyłączony"), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this.getContext(), "Wykryto zły CHEAT_TAG", Toast.LENGTH_LONG).show();
         }
