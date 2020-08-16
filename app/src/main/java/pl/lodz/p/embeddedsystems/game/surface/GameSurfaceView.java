@@ -8,11 +8,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Arrays;
 
-import pl.lodz.p.embeddedsystems.MainActivity;
 import pl.lodz.p.embeddedsystems.game.thread.GameThread;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
@@ -39,10 +39,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         this.getHolder().addCallback(this);
         this.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        this.gameSurfaceViewModel = new ViewModelProvider((MainActivity) this.getContext()).get(GameSurfaceViewModel.class);
+        this.gameSurfaceViewModel = new ViewModelProvider((AppCompatActivity) this.getContext()).get(GameSurfaceViewModel.class);
 
-        gameSurfaceViewModel.getMagnetometerValues().observe((MainActivity) this.getContext(), x -> System.out.println("MAGNETOMETER: " + Arrays.toString(x)));
-        gameSurfaceViewModel.getAccelerometerValues().observe((MainActivity) this.getContext(), x -> System.out.println("ACCELEROMETER: " + Arrays.toString(x)));
+        gameSurfaceViewModel.getMagnetometerValues().observe((AppCompatActivity) this.getContext(), x -> System.out.println("MAGNETOMETER: " + Arrays.toString(x)));
+        gameSurfaceViewModel.getAccelerometerValues().observe((AppCompatActivity) this.getContext(), x -> System.out.println("ACCELEROMETER: " + Arrays.toString(x)));
     }
 
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-

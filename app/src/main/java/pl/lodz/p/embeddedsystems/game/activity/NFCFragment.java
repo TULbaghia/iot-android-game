@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -117,7 +118,7 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
                 && propertyChangeEvent.getPropertyName().equals(Objects.requireNonNull(this.getContext()).getClass().getName())) {
 
             if (propertyChangeEvent.getNewValue().equals("onCreate")) {
-                this.gameSurfaceViewModel = new ViewModelProvider((MainActivity) this.getContext()).get(GameSurfaceViewModel.class);
+                this.gameSurfaceViewModel = new ViewModelProvider((AppCompatActivity) this.getContext()).get(GameSurfaceViewModel.class);
 
                 pendingIntent = PendingIntent.getActivity(this.getContext(), 0,
                         new Intent(this.getContext(), this.getContext().getClass())

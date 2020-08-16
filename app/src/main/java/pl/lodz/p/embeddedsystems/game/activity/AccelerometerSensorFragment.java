@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Objects;
 
-import pl.lodz.p.embeddedsystems.MainActivity;
 import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
@@ -40,11 +40,10 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
 
         this.sensorManager = (SensorManager) Objects.requireNonNull(this.getContext()).getSystemService(Context.SENSOR_SERVICE);
 
-        this.gameSurfaceViewModel = new ViewModelProvider((MainActivity) this.getContext()).get(GameSurfaceViewModel.class);
+        this.gameSurfaceViewModel = new ViewModelProvider((AppCompatActivity) this.getContext()).get(GameSurfaceViewModel.class);
 
         registerSensorListener();
     }
