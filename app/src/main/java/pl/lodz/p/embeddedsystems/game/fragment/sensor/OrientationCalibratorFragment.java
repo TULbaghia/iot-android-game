@@ -29,8 +29,8 @@ public class OrientationCalibratorFragment extends Fragment {
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) Objects.requireNonNull(this.getContext())).get(GameSurfaceViewModel.class);
 
         this.gameSurfaceViewModel.getAccelerometerValues()
-                .observe((LifecycleOwner) this.getContext(),
-                        accelerometerValues -> this.gameSurfaceViewModel.getOrientationValues().setValue(calibrateData(
+                .observe((LifecycleOwner) this.getContext(), accelerometerValues ->
+                        this.gameSurfaceViewModel.getOrientationValues().setValue(calibrateData(
                                 this.gameSurfaceViewModel.getMagnetometerValues().getValue(),
                                 accelerometerValues
                         )));
