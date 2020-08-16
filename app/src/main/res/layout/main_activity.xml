@@ -36,6 +36,18 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/gameUI"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/gameUIFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.fragment.GameUIFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/hiddenFragments"
         android:layout_width="0dp"
         android:layout_height="0dp"

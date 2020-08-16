@@ -45,20 +45,26 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         // >>>EXAMPLE- TO REMOVE
         gameSurfaceViewModel.getMagnetometerValues().observe((LifecycleOwner) this.getContext(), x -> {
-            if(gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
+            if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
                 Log.v("MAGNETOMETER", Arrays.toString(x));
             }
         });
         gameSurfaceViewModel.getAccelerometerValues().observe((LifecycleOwner) this.getContext(), x -> {
-            if(gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
+            if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
                 Log.v("ACCELEROMETER", Arrays.toString(x));
             }
         });
         gameSurfaceViewModel.getOrientationValues().observe((LifecycleOwner) this.getContext(), x -> {
-            if(gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
+            if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
                 Log.v("Orientation", Arrays.toString(x));
             }
         });
+        //Temporary point increase.
+        gameSurfaceViewModel.getOrientationValues().observe((LifecycleOwner) this.getContext(), x ->
+                this.gameSurfaceViewModel.getGainedScore().setValue(
+                        this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + 1
+                )
+        );
         // <<<EXAMPLE- TO REMOVE
     }
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-

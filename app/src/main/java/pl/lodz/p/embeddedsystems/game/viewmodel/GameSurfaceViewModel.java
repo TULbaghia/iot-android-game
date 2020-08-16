@@ -18,6 +18,8 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> cheatModeEnabled;
 
+    private MutableLiveData<Integer> gainedScore;
+
 
     public GameSurfaceViewModel(@NonNull Application application) {
         super(application);
@@ -54,5 +56,12 @@ public class GameSurfaceViewModel extends AndroidViewModel {
             this.cheatModeEnabled = new MutableLiveData<>(false);
         }
         return this.cheatModeEnabled;
+    }
+
+    public MutableLiveData<Integer> getGainedScore() {
+        if (null == this.gainedScore) {
+            this.gainedScore = new MutableLiveData<>(0);
+        }
+        return this.gainedScore;
     }
 }
