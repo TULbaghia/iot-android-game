@@ -54,9 +54,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 Log.v("ACCELEROMETER", Arrays.toString(x));
             }
         });
+        gameSurfaceViewModel.getOrientationValues().observe((LifecycleOwner) this.getContext(), x -> {
+            if(gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
+                Log.v("Orientation", Arrays.toString(x));
+            }
+        });
         // <<<EXAMPLE- TO REMOVE
     }
-
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-
 
     @Override

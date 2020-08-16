@@ -14,6 +14,8 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<float[]> accelerometerValues;
 
+    private MutableLiveData<float[]> orientationValues;
+
     private MutableLiveData<Boolean> cheatModeEnabled;
 
 
@@ -38,6 +40,13 @@ public class GameSurfaceViewModel extends AndroidViewModel {
             this.accelerometerValues = new MutableLiveData<>(new float[3]);
         }
         return this.accelerometerValues;
+    }
+
+    public MutableLiveData<float[]> getOrientationValues() {
+        if (null == this.orientationValues) {
+            this.orientationValues = new MutableLiveData<>(new float[3]);
+        }
+        return this.orientationValues;
     }
 
     public MutableLiveData<Boolean> getCheatModeEnabled() {
