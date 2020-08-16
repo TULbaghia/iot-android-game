@@ -8,8 +8,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.util.Arrays;
 
@@ -39,10 +40,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         this.getHolder().addCallback(this);
         this.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        this.gameSurfaceViewModel = new ViewModelProvider((AppCompatActivity) this.getContext()).get(GameSurfaceViewModel.class);
+        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
 
-        gameSurfaceViewModel.getMagnetometerValues().observe((AppCompatActivity) this.getContext(), x -> System.out.println("MAGNETOMETER: " + Arrays.toString(x)));
-        gameSurfaceViewModel.getAccelerometerValues().observe((AppCompatActivity) this.getContext(), x -> System.out.println("ACCELEROMETER: " + Arrays.toString(x)));
+        gameSurfaceViewModel.getMagnetometerValues().observe((LifecycleOwner) this.getContext(), x -> System.out.println("MAGNETOMETER: " + Arrays.toString(x)));
+        gameSurfaceViewModel.getAccelerometerValues().observe((LifecycleOwner) this.getContext(), x -> System.out.println("ACCELEROMETER: " + Arrays.toString(x)));
     }
 
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-

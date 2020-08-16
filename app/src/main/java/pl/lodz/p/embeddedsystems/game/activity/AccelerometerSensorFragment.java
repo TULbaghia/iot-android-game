@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.util.Objects;
 
@@ -43,7 +43,7 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
 
         this.sensorManager = (SensorManager) Objects.requireNonNull(this.getContext()).getSystemService(Context.SENSOR_SERVICE);
 
-        this.gameSurfaceViewModel = new ViewModelProvider((AppCompatActivity) this.getContext()).get(GameSurfaceViewModel.class);
+        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
 
         registerSensorListener();
     }
