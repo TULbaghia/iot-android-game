@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -42,8 +43,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
 
-        gameSurfaceViewModel.getMagnetometerValues().observe((LifecycleOwner) this.getContext(), x -> System.out.println("MAGNETOMETER: " + Arrays.toString(x)));
-        gameSurfaceViewModel.getAccelerometerValues().observe((LifecycleOwner) this.getContext(), x -> System.out.println("ACCELEROMETER: " + Arrays.toString(x)));
+        // >>>EXAMPLE- TO REMOVE
+        gameSurfaceViewModel.getMagnetometerValues().observe((LifecycleOwner) this.getContext(), x -> {
+            if(gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
+                Log.v("MAGNETOMETER", Arrays.toString(x));
+            }
+        });
+        gameSurfaceViewModel.getAccelerometerValues().observe((LifecycleOwner) this.getContext(), x -> {
+            if(gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
+                Log.v("ACCELEROMETER", Arrays.toString(x));
+            }
+        });
+        // <<<EXAMPLE- TO REMOVE
     }
 
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-

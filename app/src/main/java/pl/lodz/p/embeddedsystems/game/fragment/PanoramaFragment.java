@@ -1,4 +1,4 @@
-package pl.lodz.p.embeddedsystems.game.activity;
+package pl.lodz.p.embeddedsystems.game.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

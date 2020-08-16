@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.Objects;
+
 public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<float[]> magnetometerValues;
@@ -17,6 +19,10 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     public GameSurfaceViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public <T> T getNonNullValueOf(@NonNull MutableLiveData<T> item) {
+        return Objects.requireNonNull(item.getValue());
     }
 
 
@@ -38,6 +44,6 @@ public class GameSurfaceViewModel extends AndroidViewModel {
         if (null == this.cheatModeEnabled) {
             this.cheatModeEnabled = new MutableLiveData<>(false);
         }
-        return cheatModeEnabled;
+        return this.cheatModeEnabled;
     }
 }

@@ -1,4 +1,4 @@
-package pl.lodz.p.embeddedsystems.game.activity;
+package pl.lodz.p.embeddedsystems.game.fragment.sensor;
 
 import android.content.Context;
 import android.hardware.Sensor;

@@ -13,7 +13,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/panoramaFragment"
-            android:name="pl.lodz.p.embeddedsystems.game.activity.PanoramaFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.fragment.PanoramaFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
@@ -30,19 +30,19 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/NFCFragment"
-            android:name="pl.lodz.p.embeddedsystems.game.activity.NFCFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.fragment.NFCFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/magneticSensorFragment"
-            android:name="pl.lodz.p.embeddedsystems.game.activity.MagneticSensorFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.fragment.sensor.MagneticSensorFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/accelerometerSensorFragment"
-            android:name="pl.lodz.p.embeddedsystems.game.activity.AccelerometerSensorFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.fragment.sensor.AccelerometerSensorFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </FrameLayout>
