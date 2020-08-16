@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
@@ -79,7 +80,11 @@ public class MainActivity extends AppCompatActivity {
     private void forceFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Objects.requireNonNull(this.getWindow().getInsetsController()).hide(WindowInsets.Type.statusBars());
+            Objects.requireNonNull(this.getWindow().getInsetsController()).hide(WindowInsets.Type.navigationBars());
         } else {
+            this.getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            );
             this.getWindow().setFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN
