@@ -63,12 +63,21 @@ public class MainActivity extends AppCompatActivity {
     // -=-=-=-=- >>>PropertyChangeSupport -=-=-=-=-
 
     /**
-     * Dodajemy obserwatorów dla tej klasy.
+     * Dodanie obserwatora dla tej klasy.
      *
      * @param propertyChangeListener objekt implementujący PropertyChangeListener
      */
     public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
         propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+    }
+
+    /**
+     * Usunięcie obserwatora dla tej klasy.
+     *
+     * @param propertyChangeListener objekt implementujący PropertyChangeListener
+     */
+    public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
+        propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
     }
 
     // -=-=-=-=- <<<PropertyChangeSupport -=-=-=-=-

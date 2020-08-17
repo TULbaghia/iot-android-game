@@ -83,6 +83,18 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
         return inflater.inflate(R.layout.nfc_fragment, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((MainActivity) Objects.requireNonNull(this.getContext())).addPropertyChangeListener(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) Objects.requireNonNull(this.getContext())).removePropertyChangeListener(this);
+    }
+
     /**
      * W momencie zatrzymania działania aplikacji zatrzymujemy szukanie tagów NFC.
      */
