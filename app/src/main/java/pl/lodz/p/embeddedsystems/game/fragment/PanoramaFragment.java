@@ -21,6 +21,12 @@ import pl.lodz.p.embeddedsystems.R;
  */
 public class PanoramaFragment extends Fragment {
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
+    }
+
     /**
      * Tworzy widok panoramy z szablonu panorama_fragment.
      *

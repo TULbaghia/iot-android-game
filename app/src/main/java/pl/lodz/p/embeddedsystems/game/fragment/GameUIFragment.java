@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
@@ -25,6 +24,7 @@ public class GameUIFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
 
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) Objects.requireNonNull(this.getContext())).get(GameSurfaceViewModel.class);
     }
@@ -35,12 +35,13 @@ public class GameUIFragment extends Fragment {
         return inflater.inflate(R.layout.gameui_fragment, container, false);
     }
 
+    //TODO: przeniesc setText do strings.xml
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         this.gameSurfaceViewModel.getGainedScore()
-                .observe((LifecycleOwner) Objects.requireNonNull(this.getContext()), data ->
+                .observe(this.getViewLifecycleOwner(), data ->
                         ((TextView) view.findViewById(R.id.gameUI__Score)).setText("Punkty: " + data)
                 );
     }

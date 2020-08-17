@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
@@ -25,22 +24,27 @@ public class OrientationCalibratorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
 
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) Objects.requireNonNull(this.getContext())).get(GameSurfaceViewModel.class);
-
-        this.gameSurfaceViewModel.getAccelerometerValues()
-                .observe((LifecycleOwner) this.getContext(), accelerometerValues ->
-                        this.gameSurfaceViewModel.getOrientationValues().setValue(calibrateData(
-                                this.gameSurfaceViewModel.getMagnetometerValues().getValue(),
-                                accelerometerValues
-                        )));
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.sensor_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        this.gameSurfaceViewModel.getAccelerometerValues()
+                .observe(this.getViewLifecycleOwner(), accelerometerValues ->
+                        this.gameSurfaceViewModel.getOrientationValues().setValue(calibrateData(
+                                this.gameSurfaceViewModel.getMagnetometerValues().getValue(),
+                                accelerometerValues
+                        )));
     }
 
     private float[] calibrateData(float[] magnetometerValues, float[] accelerometerValues) {

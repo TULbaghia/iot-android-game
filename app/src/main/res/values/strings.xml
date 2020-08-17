@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Systemy wbudowane</string>
+    <string name="gameStartText">Skieruj urządzenie na północ aby rozpocząć.</string>
 </resources>
