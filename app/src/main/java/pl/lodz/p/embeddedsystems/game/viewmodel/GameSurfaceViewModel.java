@@ -20,6 +20,8 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<Integer> gainedScore;
 
+    private MutableLiveData<Boolean> isStarted;
+
 
     public GameSurfaceViewModel(@NonNull Application application) {
         super(application);
@@ -63,5 +65,12 @@ public class GameSurfaceViewModel extends AndroidViewModel {
             this.gainedScore = new MutableLiveData<>(0);
         }
         return this.gainedScore;
+    }
+
+    public MutableLiveData<Boolean> getIsStarted(){
+        if (null == this.isStarted) {
+            this.isStarted = new MutableLiveData<>(false);
+        }
+        return this.isStarted;
     }
 }
