@@ -1,6 +1,5 @@
 package pl.lodz.p.embeddedsystems.game.surface;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
@@ -10,17 +9,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
-import pl.lodz.p.embeddedsystems.MainActivity;
+import pl.lodz.p.embeddedsystems.game.surface.elements.GameSurfaceElements;
 import pl.lodz.p.embeddedsystems.game.thread.GameThread;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
@@ -31,7 +26,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      */
     private GameThread gameThread;
 
+    /**
+     * View model - powierzchnia gry.
+     */
     GameSurfaceViewModel gameSurfaceViewModel = null;
+
+    /**
+     * Elementy na planszy.
+     */
+    GameSurfaceElements gameSurfaceViewElements = null;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -40,6 +43,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public GameSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.gameSurfaceViewElements = new GameSurfaceElements(this.getContext());
         init();
     }
 
@@ -71,11 +75,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + 1
                 )
         );
-        gameSurfaceViewModel.getIsStarted().observe((LifecycleOwner) this.getContext(), x -> {
-            if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
-                Log.v("Azimuth reached:", x.toString());
-            }
-        });
         // <<<EXAMPLE- TO REMOVE
     }
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-
@@ -84,6 +83,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void draw(Canvas canvas) {
         if (null != canvas) {
             super.draw(canvas);
+            this.gameSurfaceViewElements.getPlayer().drawShape(canvas);
         }
     }
 

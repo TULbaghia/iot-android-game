@@ -58,7 +58,9 @@ public class GameThread extends Thread {
                 e.printStackTrace();
             } finally {
                 try {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+                    if(canvas != null) {
+                        surfaceHolder.unlockCanvasAndPost(canvas);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
