@@ -2,7 +2,10 @@ package pl.lodz.p.embeddedsystems.game.surface;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -43,7 +46,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public GameSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.gameSurfaceViewElements = new GameSurfaceElements(this.getContext());
         init();
     }
 
@@ -51,7 +53,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         this.getHolder().addCallback(this);
         this.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
+        // TODO: Wsparcie dla rysowania, dla API przed 28-- usunąć w finalnej wersji aplikacji
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            this.setZOrderOnTop(true);
+        }
+
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
+        this.gameSurfaceViewElements = new GameSurfaceElements(this.getContext());
 
         // >>>EXAMPLE- TO REMOVE
         gameSurfaceViewModel.getMagnetometerValues().observe((LifecycleOwner) this.getContext(), x -> {
@@ -83,6 +91,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void draw(Canvas canvas) {
         if (null != canvas) {
             super.draw(canvas);
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             this.gameSurfaceViewElements.getPlayer().drawShape(canvas);
         }
     }
