@@ -1,5 +1,6 @@
 package pl.lodz.p.embeddedsystems.game.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import com.panoramagl.PLImage;
 import com.panoramagl.PLManager;
 import com.panoramagl.PLSphericalPanorama;
 import com.panoramagl.utils.PLUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import pl.lodz.p.embeddedsystems.R;
 
@@ -47,16 +51,36 @@ public class PanoramaFragment extends Fragment {
         setupPanorama(view);
     }
 
+
+    private class PLManagerWrapper extends PLManager {
+        public PLManagerWrapper(Context context) {
+            super(context);
+        }
+
+        public boolean invokeActivateOrientation() {
+            boolean ret = false;
+            try {
+                Method m = PLManager.class.getDeclaredMethod("activateOrientation");
+                ret = (boolean) m.invoke(this);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+            return ret;
+        }
+    }
+
     /**
      * Ustawia panoramę.
      *
      * @param view widok dla którego ustawić panoramę
      */
     private void setupPanorama(View view) {
-        PLManager plManager = new PLManager(this.getContext());
+        PLManagerWrapper plManager = new PLManagerWrapper(this.getContext());
         plManager.setContentView((ViewGroup) view);
         plManager.onCreate();
 
+        plManager.invokeActivateOrientation();
         plManager.setAccelerometerEnabled(false);
         plManager.setInertiaEnabled(false);
         plManager.setZoomEnabled(false);
