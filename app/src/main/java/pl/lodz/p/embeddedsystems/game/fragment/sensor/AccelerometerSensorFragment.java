@@ -7,8 +7,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,8 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
 
     GameSurfaceViewModel gameSurfaceViewModel = null;
 
+    int rotation;
+
     private void registerSensorListener() {
         sensorManager.registerListener(
                 this,
@@ -43,7 +47,6 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
         this.setRetainInstance(true);
 
         this.sensorManager = (SensorManager) Objects.requireNonNull(this.getContext()).getSystemService(Context.SENSOR_SERVICE);
-
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
     }
 
@@ -56,6 +59,8 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         registerSensorListener();
     }
 
@@ -77,7 +82,7 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            gameSurfaceViewModel.getAccelerometerValues().setValue(sensorEvent.values);
+            gameSurfaceViewModel.getAccelerometerValues().setValue(applyRotation(sensorEvent.values));
         }
     }
 
@@ -87,4 +92,30 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     }
 
     // -=-=-=-=- <<<SensorEventListener -=-=-=-=-
+
+    // @Michał powiedz proszę czy takie coś może być, czy może trzeba jeszcze aktualizować kompas?
+    private float[] applyRotation(float[] accelerometerValues) {
+        float tmp;
+        rotation = ((WindowManager) Objects.requireNonNull(getContext()).getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        switch (this.rotation) {
+            case Surface.ROTATION_180:
+                break;
+            case Surface.ROTATION_0:
+//                accelerometerValues[0] = -accelerometerValues[0];
+                break;
+            case Surface.ROTATION_90:
+                tmp = accelerometerValues[0];
+                accelerometerValues[0] = -accelerometerValues[1];
+                accelerometerValues[1] = tmp;
+                break;
+            case Surface.ROTATION_270:
+                tmp = accelerometerValues[0];
+                accelerometerValues[0] = accelerometerValues[1];
+                accelerometerValues[1] = -tmp;
+                break;
+            default:
+                break;
+        }
+        return accelerometerValues;
+    }
 }
