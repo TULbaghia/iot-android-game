@@ -96,7 +96,7 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     // @Michał powiedz proszę czy takie coś może być, czy może trzeba jeszcze aktualizować kompas?
     private float[] applyRotation(float[] accelerometerValues) {
         float tmp;
-        rotation = ((WindowManager) Objects.requireNonNull(getContext()).getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        rotation =  Objects.requireNonNull(gameSurfaceViewModel.getRotation().getValue());
         switch (this.rotation) {
             case Surface.ROTATION_180:
                 break;

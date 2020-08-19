@@ -80,5 +80,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="gone" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/rotationFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.fragment.sensor.RotationFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
     </FrameLayout>
 </FrameLayout>

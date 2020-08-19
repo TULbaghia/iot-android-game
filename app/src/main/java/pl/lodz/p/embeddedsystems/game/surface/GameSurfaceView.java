@@ -92,6 +92,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         if (null != canvas) {
             super.draw(canvas);
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            this.gameSurfaceViewElements.getScoringZone().drawShape(canvas);
             this.gameSurfaceViewElements.getPlayer().drawShape(canvas);
         }
     }

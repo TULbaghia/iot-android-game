@@ -22,6 +22,8 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> isStarted;
 
+    private MutableLiveData<Integer> rotation;
+
 
     public GameSurfaceViewModel(@NonNull Application application) {
         super(application);
@@ -72,5 +74,12 @@ public class GameSurfaceViewModel extends AndroidViewModel {
             this.isStarted = new MutableLiveData<>(false);
         }
         return this.isStarted;
+    }
+
+    public MutableLiveData<Integer> getRotation(){
+        if (null == this.rotation) {
+            this.rotation = new MutableLiveData<>(0);
+        }
+        return this.rotation;
     }
 }
