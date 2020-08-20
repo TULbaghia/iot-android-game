@@ -41,11 +41,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      */
     GameSurfaceElements gameSurfaceViewElements = null;
 
-    /**
-     * Rotacja.
-     */
-    private int rotation;
-
     public GameSurfaceView(Context context) {
         super(context);
         init();

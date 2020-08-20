@@ -44,7 +44,6 @@ public class GameSurfaceElements {
      */
     int lastKnownRotation;
 
-
     /**
      * Parametry wyświetlania, funkcje: konstruowanie obiektów, ustalanie pozycji.
      */
@@ -79,7 +78,6 @@ public class GameSurfaceElements {
     private void setObservers(@NonNull Context context) {
         setRotationObserver(context);
         setPlayerObserver(context);
-
     }
 
     /**

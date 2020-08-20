@@ -116,6 +116,11 @@ public abstract class Shape {
         allowedValues.top = minHeigh;
     }
 
+    /**
+     * Funkcja zwracająca ograniczające obszar gry wartości.
+     *
+     * @return ograniczające wartości obszaru gry.
+     */
     public RectF getAllowedValues() {
         return allowedValues;
     }
