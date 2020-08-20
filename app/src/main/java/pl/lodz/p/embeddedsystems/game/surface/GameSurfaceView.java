@@ -1,6 +1,8 @@
 package pl.lodz.p.embeddedsystems.game.surface;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -38,6 +40,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * Elementy na planszy.
      */
     GameSurfaceElements gameSurfaceViewElements = null;
+
+    /**
+     * Rotacja.
+     */
+    private int rotation;
 
     public GameSurfaceView(Context context) {
         super(context);

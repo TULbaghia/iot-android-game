@@ -116,6 +116,10 @@ public abstract class Shape {
         allowedValues.top = minHeigh;
     }
 
+    public RectF getAllowedValues() {
+        return allowedValues;
+    }
+
     /**
      * Funkcja sprawdzająca czy punkt znajduje się w dozwolonych wartościach.
      *
