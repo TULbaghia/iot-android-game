@@ -85,13 +85,13 @@ public class GameSurfaceElements {
                             .getMetrics(displayMetrics);
 
                             if (rotation == Surface.ROTATION_0 && lastKnownRotation != Surface.ROTATION_0) {
-                               //
+                                System.out.println("ROT0");
                             } else if (rotation == Surface.ROTATION_180 && lastKnownRotation != Surface.ROTATION_180) {
                                 //
                             } else if (rotation == Surface.ROTATION_90 && lastKnownRotation != Surface.ROTATION_90) {
-                                //
+                                System.out.println("ROT90");
                             } else if (rotation == Surface.ROTATION_270 && lastKnownRotation != Surface.ROTATION_270) {
-                                //
+                                System.out.println("ROT270");
                             }
                             lastKnownRotation = rotation;
 
