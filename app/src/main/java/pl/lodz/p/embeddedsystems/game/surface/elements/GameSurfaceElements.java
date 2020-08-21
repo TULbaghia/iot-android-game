@@ -2,14 +2,10 @@ package pl.lodz.p.embeddedsystems.game.surface.elements;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Surface;
 
 import androidx.annotation.NonNull;
@@ -85,8 +81,11 @@ public class GameSurfaceElements {
      */
     private void setPlayerObserver(Context context) {
         this.gameSurfaceViewModel.getOrientationValues()
-                .observe((LifecycleOwner) context, orientatedData ->
-                        getPlayer().moveBy(15 * orientatedData[2],  -15 * orientatedData[1]));
+                .observe((LifecycleOwner) context, orientatedData -> {
+                    if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getIsStarted())) {
+                        getPlayer().moveBy(15 * orientatedData[2], -15 * orientatedData[1]);
+                    }
+                });
     }
 
     /**
