@@ -27,6 +27,10 @@ public class PlayerBall extends Shape implements GameObject  {
         this.radius = radius;
     }
 
+    public float getRadius() {
+        return radius;
+    }
+
     @Override
     public void drawShape(Canvas canvas) {
         canvas.drawCircle(super.getCenterX(), super.getCenterY(), this.radius, super.getStyle());

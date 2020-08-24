@@ -79,15 +79,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 Log.v("Orientation", Arrays.toString(x));
             }
         });
-        //Temporary point increase.
-        gameSurfaceViewModel.getOrientationValues().observe((LifecycleOwner) this.getContext(), x -> {
-                if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getIsStarted())) {
-                    this.gameSurfaceViewModel.getGainedScore().setValue(
-                            this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + 1
-                    );
-                }
-            }
-        );
+        //Temporary point increase if gameLock is disabled.
+//        gameSurfaceViewModel.getOrientationValues().observe((LifecycleOwner) this.getContext(), x -> {
+//                if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getIsStarted())) {
+//                    this.gameSurfaceViewModel.getGainedScore().setValue(
+//                            this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + 1
+//                    );
+//                }
+//            }
+//        );
         // <<<EXAMPLE- TO REMOVE
     }
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-

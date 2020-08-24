@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import pl.lodz.p.embeddedsystems.game.surface.elements.creator.CreatorUtils;
 import pl.lodz.p.embeddedsystems.game.surface.elements.creator.ElementsCreator;
+import pl.lodz.p.embeddedsystems.game.surface.conditions.GameSurfaceConditions;
 import pl.lodz.p.embeddedsystems.game.surface.shapes.PlayerBall;
 import pl.lodz.p.embeddedsystems.game.surface.shapes.ScoringZone;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
@@ -35,15 +36,16 @@ public class GameSurfaceElements {
      */
     GameSurfaceViewModel gameSurfaceViewModel;
 
-    /**
-     * Poprzednia wartość rotacji ekranu.
-     */
-    int lastKnownRotation;
 
     /**
      * Parametry wyświetlania, funkcje: konstruowanie obiektów, ustalanie pozycji.
      */
     DisplayMetrics displayMetrics;
+
+    /**
+     * Poprzednia wartość rotacji ekranu.
+     */
+    int lastKnownRotation;
 
     public GameSurfaceElements(@NonNull Context context) {
         gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(GameSurfaceViewModel.class);
@@ -83,7 +85,12 @@ public class GameSurfaceElements {
         this.gameSurfaceViewModel.getOrientationValues()
                 .observe((LifecycleOwner) context, orientatedData -> {
                     if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getIsStarted())) {
-                        getPlayer().moveBy(15 * orientatedData[2], -15 * orientatedData[1]);
+                        getPlayer().moveBy(25 * orientatedData[2], -25 * orientatedData[1]);
+                        if (GameSurfaceConditions.checkRules(scoringZone, playerBall, this.gameSurfaceViewModel.getGainedScore().getValue())) {
+                            this.gameSurfaceViewModel.getGainedScore().setValue(
+                                    this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + GameSurfaceConditions.getPointsInc()
+                            );
+                        }
                     }
                 });
     }
