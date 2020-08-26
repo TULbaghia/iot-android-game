@@ -14,6 +14,8 @@ public class PlayerBall extends Shape implements GameObject  {
      */
     private float radius;
 
+
+
     /**
      * Konstruktor przyjmujący środek figury oraz jej promień.
      *
@@ -24,6 +26,7 @@ public class PlayerBall extends Shape implements GameObject  {
      */
     public PlayerBall(float x, float y, Paint style, float radius) {
         super(x, y, style);
+        setMomentumEnabled(true);
         this.radius = radius;
     }
 

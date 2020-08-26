@@ -20,12 +20,17 @@ public abstract class Shape {
      */
     private RectF allowedValues;
 
+    private float[] momentum = {0f, 0f};
+
+    private boolean momentumEnabled = false;
+
+    private final float momentumFactor = 1.0f;
 
     /**
      * Konstruktor przyjmujący środek figury oraz styl.
      *
-     * @param x zmienna opisująca współrzędną na osi x.
-     * @param y zmienna opisująca współrzędną na osi y.
+     * @param x     zmienna opisująca współrzędną na osi x.
+     * @param y     zmienna opisująca współrzędną na osi y.
      * @param style zmienna zawierająca pełny styl obiektu.
      */
     public Shape(float x, float y, Paint style) {
@@ -33,7 +38,7 @@ public abstract class Shape {
         this.style = style;
 
         this.allowedValues = new RectF();
-        setMinValues(0,0 );
+        setMinValues(0, 0);
     }
 
     /**
@@ -50,10 +55,14 @@ public abstract class Shape {
         this.style = style;
     }
 
+    public void setMomentumEnabled(boolean momentumEnabled) {
+        this.momentumEnabled = momentumEnabled;
+    }
+
     /**
      * @return styl obiektu
      */
-    public Paint getStyle(){
+    public Paint getStyle() {
         return this.style;
     }
 
@@ -67,14 +76,14 @@ public abstract class Shape {
     /**
      * @return współrzędna x środka obiektu w danej orientacji.
      */
-    public float getCenterX(){
+    public float getCenterX() {
         return this.center.x;
     }
 
     /**
      * @return współrzędna y środka obiektu w danej orientacji.
      */
-    public float getCenterY(){
+    public float getCenterY() {
         return this.center.y;
     }
 
@@ -85,18 +94,34 @@ public abstract class Shape {
      * @param dy zmienna zawierająca wartość przesunięcia na osi y.
      */
     public void moveBy(float dx, float dy) {
-        if (isInRange(this.center.x + dx, this.center.y)) {
-            this.center.offset(dx, 0);
-        }
-        if (isInRange(this.center.x, this.center.y + dy)) {
-            this.center.offset(0, dy);
+        if (momentumEnabled) {
+            momentum[0] += momentumFactor * dx;
+            momentum[1] += -momentumFactor * dy;
+
+            if (isInRange(this.center.x + momentum[0], this.center.y)) {
+                this.center.offset(momentum[0], 0);
+            } else {
+                momentum[0] = 0f;
+            }
+            if (isInRange(this.center.x, this.center.y + momentum[1])) {
+                this.center.offset(0, momentum[1]);
+            } else {
+                momentum[1] = 0f;
+            }
+        } else {
+            if (isInRange(this.center.x + dx, this.center.y)) {
+                this.center.offset(dx, 0);
+            }
+            if (isInRange(this.center.x, this.center.y + dy)) {
+                this.center.offset(0, dy);
+            }
         }
     }
 
     /**
      * Funkcja ustawiająca maksymalne, dozwolone wartości wartości.
      *
-     * @param maxWidth  maksymalna wartość na osi x.
+     * @param maxWidth maksymalna wartość na osi x.
      * @param maxHeigh maksymalna wartość na osi y.
      */
     public void setMaxValues(float maxWidth, float maxHeigh) {

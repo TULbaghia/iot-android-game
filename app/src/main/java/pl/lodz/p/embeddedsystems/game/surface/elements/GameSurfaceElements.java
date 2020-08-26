@@ -85,7 +85,7 @@ public class GameSurfaceElements {
         this.gameSurfaceViewModel.getOrientationValues()
                 .observe((LifecycleOwner) context, orientatedData -> {
                     if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getIsStarted())) {
-                        getPlayer().moveBy(25 * orientatedData[2], -25 * orientatedData[1]);
+                        getPlayer().moveBy(orientatedData[2], orientatedData[1]);
                         if (GameSurfaceConditions.checkRules(scoringZone, playerBall, this.gameSurfaceViewModel.getGainedScore().getValue())) {
                             this.gameSurfaceViewModel.getGainedScore().setValue(
                                     this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + GameSurfaceConditions.getPointsInc()
@@ -145,7 +145,7 @@ public class GameSurfaceElements {
     }
 
     private void prepareGameObjects() {
-        createPlayer(displayMetrics.widthPixels / 2f, displayMetrics.heightPixels, 70);
+        createPlayer(displayMetrics.widthPixels / 2f, displayMetrics.heightPixels / 2f, 70);
         createScoringZone(displayMetrics.widthPixels / 3f, displayMetrics.heightPixels / 5f, 160);
         setMaxAllowedValues();
     }
