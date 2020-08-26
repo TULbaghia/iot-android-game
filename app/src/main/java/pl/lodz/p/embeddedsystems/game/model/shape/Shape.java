@@ -20,10 +20,19 @@ public abstract class Shape {
      */
     private RectF allowedValues;
 
+    /**
+     * Aktualne wartości pędu.
+     */
     private float[] momentum = {0f, 0f};
 
+    /**
+     * Stan aktywacji funkcji zachowania pędu.
+     */
     private boolean momentumEnabled = false;
 
+    /**
+     * Mnożnik momentu pędu.
+     */
     private final float momentumFactor = 1.0f;
 
     /**
@@ -55,6 +64,11 @@ public abstract class Shape {
         this.style = style;
     }
 
+    /**
+     * Ustawienie stanu aktywacji funkcji zachowania pędu.
+     *
+     * @param momentumEnabled czy zachowanie pędu ma być aktywne
+     */
     public void setMomentumEnabled(boolean momentumEnabled) {
         this.momentumEnabled = momentumEnabled;
     }
