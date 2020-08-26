@@ -18,9 +18,14 @@ public class GameSurfaceConditions {
 
     public static boolean checkRules(ScoringZone scoringZone, PlayerBall playerBall, Integer currentPoints) {
         if (isInRange(scoringZone, playerBall)) {
-            if ((currentPoints + POINTS_INC) % SCORING_ZONE_LIMIT == 0) {
+            final float probability = 0.01f;
+            float randomDouble =
+                    (float) ThreadLocalRandom.current().nextDouble(0f, 1.0f);
+            if (randomDouble < probability) {
+                scoringZone.setRadius(
+                        (float) ThreadLocalRandom.current().nextDouble(100f, 300f));
                 float offset = scoringZone.getRadius();
-                scoringZone.setCenter(new PointF( (float) ThreadLocalRandom.current().nextDouble(offset, scoringZone.getAllowedValues().right - offset),
+                scoringZone.setCenter(new PointF( (float) ThreadLocalRandom.current().nextDouble(offset * 2, scoringZone.getAllowedValues().right - offset),
                         (float) ThreadLocalRandom.current().nextDouble(offset, scoringZone.getAllowedValues().bottom - offset))
                 );
             }

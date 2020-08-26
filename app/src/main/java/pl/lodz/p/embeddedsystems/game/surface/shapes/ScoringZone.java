@@ -31,6 +31,10 @@ public class ScoringZone extends Shape implements GameObject {
         return radius;
     }
 
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
     @Override
     public void drawShape(Canvas canvas) {
         canvas.drawCircle(super.getCenterX(), super.getCenterY(), this.radius, super.getStyle());
