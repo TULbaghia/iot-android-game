@@ -26,6 +26,8 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<Integer> significantMotion;
 
+    private MutableLiveData<Integer> stepCounter;
+
 
     public GameSurfaceViewModel(@NonNull Application application) {
         super(application);
@@ -90,5 +92,12 @@ public class GameSurfaceViewModel extends AndroidViewModel {
             this.significantMotion = new MutableLiveData<>(0);
         }
         return this.significantMotion;
+    }
+
+    public MutableLiveData<Integer> getStepCounter(){
+        if (null == this.stepCounter) {
+            this.stepCounter = new MutableLiveData<>(0);
+        }
+        return this.stepCounter;
     }
 }
