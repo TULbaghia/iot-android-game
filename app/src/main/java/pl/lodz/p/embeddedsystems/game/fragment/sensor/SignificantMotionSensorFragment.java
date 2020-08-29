@@ -6,31 +6,76 @@ import android.hardware.SensorManager;
 import android.hardware.TriggerEvent;
 import android.hardware.TriggerEventListener;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
-import java.util.Objects;
-
-import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
+/**
+ * Fragment zliczający ruch urządzenia.
+ */
 public class SignificantMotionSensorFragment extends Fragment {
 
-    SensorManager sensorManager = null;
+    private SensorManager sensorManager = null;
 
-    GameSurfaceViewModel gameSurfaceViewModel = null;
+    private GameSurfaceViewModel gameSurfaceViewModel = null;
 
-    Sensor sensor;
+    private Sensor sensor;
 
-    TriggerEventListener triggerEventListener;
+    private TriggerEventListener triggerEventListener;
 
+    // -=-=-=-=- >>>Fragment -=-=-=-=-
+
+    /**
+     * Wstępnie inicjuje fragment danymi oraz czujnik ruchu.
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
+
+        assert getContext() != null;
+
+        this.sensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
+        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
+        this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
+    }
+
+    /**
+     * Zatrzymanie obserwatora gdy fragment jest wstrzymany.
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
+    }
+
+    /**
+     * Zatrzymanie obserwatora gdy fragment jest niszczony.
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
+    }
+
+    /**
+     * Przywracanie/tworzenie obserwatora, gdy fragment jest wykorzystywany.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerSensorListener();
+    }
+
+    // -=-=-=-=- <<<Fragment -=-=-=-=-
+
+    /**
+     * Rejestrowanie obserwatora dla zdarzenia.
+     */
     private void registerSensorListener() {
         this.triggerEventListener = new TriggerEventListener() {
             @Override
@@ -42,49 +87,4 @@ public class SignificantMotionSensorFragment extends Fragment {
 
         sensorManager.requestTriggerSensor(this.triggerEventListener, this.sensor);
     }
-
-    // -=-=-=-=- >>>Fragment -=-=-=-=-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
-
-        this.sensorManager = (SensorManager) Objects.requireNonNull(this.getContext()).getSystemService(Context.SENSOR_SERVICE);
-
-        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
-
-        this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.sensor_fragment, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        registerSensorListener();
-    }
-
-    // -=-=-=-=- <<<Fragment -=-=-=-=-
 }
