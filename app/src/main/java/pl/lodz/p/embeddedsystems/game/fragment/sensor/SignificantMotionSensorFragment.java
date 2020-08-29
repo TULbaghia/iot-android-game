@@ -50,7 +50,9 @@ public class SignificantMotionSensorFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
+        if(this.sensor != null) {
+            sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
+        }
     }
 
     /**
@@ -59,7 +61,9 @@ public class SignificantMotionSensorFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
+        if(this.sensor != null) {
+            sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
+        }
     }
 
     /**
@@ -68,7 +72,9 @@ public class SignificantMotionSensorFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        registerSensorListener();
+        if(this.sensor != null) {
+            registerSensorListener();
+        }
     }
 
     // -=-=-=-=- <<<Fragment -=-=-=-=-

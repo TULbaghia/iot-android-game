@@ -21,10 +21,15 @@ import java.lang.reflect.Method;
 import pl.lodz.p.embeddedsystems.R;
 
 /**
- * Aktywność (Fragment) odpowiadająca za wyświetlanie panoramy jako tło aplikacji
+ * Fragment wyświetlający panoramę jako tło aplikacji.
  */
 public class PanoramaFragment extends Fragment {
 
+    // -=-=-=-=- >>>Fragment -=-=-=-=-
+
+    /**
+     * Wstępnie inicjuje fragment danymi.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +38,6 @@ public class PanoramaFragment extends Fragment {
 
     /**
      * Tworzy widok panoramy z szablonu panorama_fragment.
-     *
-     * @param inflater           pozwala załadować xml aby otrzymać widok
-     * @param container          grupa widoków
-     * @param savedInstanceState referencja do obiektu podawanego przez system w onCreate
-     * @return widok zawierający panoramę
      */
     @Nullable
     @Override
@@ -45,33 +45,17 @@ public class PanoramaFragment extends Fragment {
         return inflater.inflate(R.layout.panorama_fragment, container, false);
     }
 
+    /**
+     * Po utworzeniu widoku, rozpoczyna inicjalizację panoramy.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupPanorama(view);
     }
 
-
-    private class PLManagerWrapper extends PLManager {
-        public PLManagerWrapper(Context context) {
-            super(context);
-        }
-
-        public boolean invokeActivateOrientation() {
-            boolean ret = false;
-            try {
-                Method m = PLManager.class.getDeclaredMethod("activateOrientation");
-                ret = (boolean) m.invoke(this);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
-            return ret;
-        }
-    }
-
     /**
-     * Ustawia panoramę.
+     * Inicjalizacja panoramy.
      *
      * @param view widok dla którego ustawić panoramę
      */
@@ -95,5 +79,27 @@ public class PanoramaFragment extends Fragment {
 
         panorama.getCamera().lookAtAndZoomFactor(pitch, yaw, zoomFactor, false);
         plManager.setPanorama(panorama);
+    }
+
+    // -=-=-=-=- <<<Fragment -=-=-=-=-
+
+    /**
+     * Opakowuje klasę biblioteczną panoramy.
+     * Umożliwia zmianę orientacji panoramy przy zmianie orientacji ekranu.
+     */
+    private static class PLManagerWrapper extends PLManager {
+        public PLManagerWrapper(Context context) {
+            super(context);
+        }
+
+        public void invokeActivateOrientation() {
+            try {
+                Method m = PLManager.class.getDeclaredMethod("activateOrientation");
+                m.invoke(this);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

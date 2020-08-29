@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Systemy wbudowane</string>
     <string name="gameStartText">Skieruj urządzenie na północ aby rozpocząć.</string>
+    <string name="uiPoints">Punkty</string>
+    <string name="uiStep">Kroki</string>
+    <string name="uiSigMo">Ruch</string>
 </resources>
