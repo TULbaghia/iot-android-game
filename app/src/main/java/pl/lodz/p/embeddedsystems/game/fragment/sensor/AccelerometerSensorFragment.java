@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,24 +19,13 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.util.Objects;
 
-import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
 public class AccelerometerSensorFragment extends Fragment implements SensorEventListener {
 
-    SensorManager sensorManager = null;
+    private SensorManager sensorManager = null;
 
-    GameSurfaceViewModel gameSurfaceViewModel = null;
-
-    int rotation;
-
-    private void registerSensorListener() {
-        sensorManager.registerListener(
-                this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_GAME
-        );
-    }
+    private GameSurfaceViewModel gameSurfaceViewModel = null;
 
     // -=-=-=-=- >>>Fragment -=-=-=-=-
 
@@ -53,15 +41,7 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.sensor_fragment, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-        registerSensorListener();
+        return null;
     }
 
     @Override
@@ -73,7 +53,11 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     @Override
     public void onResume() {
         super.onResume();
-        registerSensorListener();
+        sensorManager.registerListener(
+                this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_GAME
+        );
     }
 
     // -=-=-=-=- <<<Fragment -=-=-=-=-
@@ -88,20 +72,15 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
 
     // -=-=-=-=- <<<SensorEventListener -=-=-=-=-
 
-    // @Michał powiedz proszę czy takie coś może być, czy może trzeba jeszcze aktualizować kompas?
+
     private float[] applyRotation(float[] accelerometerValues) {
         float tmp;
-        rotation =  Objects.requireNonNull(gameSurfaceViewModel.getRotation().getValue());
-        switch (this.rotation) {
+        switch (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getRotation())) {
             case Surface.ROTATION_180:
-                break;
-            case Surface.ROTATION_0:
-//                accelerometerValues[0] = -accelerometerValues[0];
                 break;
             case Surface.ROTATION_90:
                 tmp = accelerometerValues[0];
