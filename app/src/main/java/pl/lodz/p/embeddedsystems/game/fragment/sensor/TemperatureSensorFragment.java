@@ -30,6 +30,9 @@ import java.util.Objects;
 import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
+/**
+ * @deprecated Do usunięcia
+ */
 public class TemperatureSensorFragment extends Fragment implements SensorEventListener {
 
     SensorManager sensorManager = null;
