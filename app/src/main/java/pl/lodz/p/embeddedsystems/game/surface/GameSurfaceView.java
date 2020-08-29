@@ -1,38 +1,36 @@
 package pl.lodz.p.embeddedsystems.game.surface;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
-import java.util.Arrays;
 
 import pl.lodz.p.embeddedsystems.game.surface.elements.GameSurfaceElements;
 import pl.lodz.p.embeddedsystems.game.thread.GameThread;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
+/**
+ * Plansza przechowująca informacje o rozgrywce.
+ */
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     /**
-     * Wątek gry, odświeżajacy planszę.
+     * Wątek odświeżajacyg planszę gry.
      */
     private GameThread gameThread;
 
     /**
-     * View model - powierzchnia gry.
+     * Widok-model powierzchnia gry.
      */
     GameSurfaceViewModel gameSurfaceViewModel = null;
 
@@ -41,16 +39,30 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      */
     GameSurfaceElements gameSurfaceViewElements = null;
 
-    public GameSurfaceView(Context context) {
+    /**
+     * Konstruktor dla FragmentManager'a.
+     *
+     * @param context kontekst aplikacji (obiekt aktywności)
+     */
+    public GameSurfaceView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public GameSurfaceView(Context context, AttributeSet attrs) {
+    /**
+     * Konstruktor dla propatora xml.
+     *
+     * @param context kontekst aplikacji (obiekt aktywności)
+     * @param attrs atrybuty podane w xml
+     */
+    public GameSurfaceView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Inicjalizator pól obiektu
+     */
     private void init() {
         this.getHolder().addCallback(this);
         this.getHolder().setFormat(PixelFormat.TRANSPARENT);
@@ -62,36 +74,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
         this.gameSurfaceViewElements = new GameSurfaceElements(this.getContext());
-
-        // >>>EXAMPLE- TO REMOVE
-        gameSurfaceViewModel.getMagnetometerValues().observe((LifecycleOwner) this.getContext(), x -> {
-            if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
-                Log.v("MAGNETOMETER", Arrays.toString(x));
-            }
-        });
-        gameSurfaceViewModel.getAccelerometerValues().observe((LifecycleOwner) this.getContext(), x -> {
-            if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
-                Log.v("ACCELEROMETER", Arrays.toString(x));
-            }
-        });
-        gameSurfaceViewModel.getOrientationValues().observe((LifecycleOwner) this.getContext(), x -> {
-            if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getCheatModeEnabled())) {
-                Log.v("Orientation", Arrays.toString(x));
-            }
-        });
-        //Temporary point increase if gameLock is disabled.
-//        gameSurfaceViewModel.getOrientationValues().observe((LifecycleOwner) this.getContext(), x -> {
-//                if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getIsStarted())) {
-//                    this.gameSurfaceViewModel.getGainedScore().setValue(
-//                            this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + 1
-//                    );
-//                }
-//            }
-//        );
-        // <<<EXAMPLE- TO REMOVE
     }
+
     // -=-=-=-=- >>>SurfaceView -=-=-=-=-
 
+    /**
+     * Rysowanie elementów na planszy.
+     *
+     * @param canvas plansza do rysowania
+     */
     @Override
     public void draw(Canvas canvas) {
         if (null != canvas) {
@@ -105,6 +96,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     // -=-=-=-=- <<<SurfaceView -=-=-=-=-
     // -=-=-=-=- >>>SurfaceHolder.Callback -=-=-=-=-
 
+    /**
+     * Tworzenie powierzchni planszy
+     *
+     * @param surfaceHolder obiekt zawierający powierzchnię
+     */
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         gameThread = new GameThread(this);
@@ -114,9 +110,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
     }
 
+    /**
+     * Wykonywane podczas niszczenia planszy.
+     *
+     * @param surfaceHolder obiekt zawierający powierzchnię
+     */
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
         while (true) {

@@ -4,18 +4,14 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 
 /**
- * Interfejs, który implementują wszystkie obiekty podlegające aktualizacji w czasie gry.
+ * Interfejs implementowany przez wszystkie obiekty podlegające aktualizacji w czasie gry.
  */
 public interface GameObject {
     /**
      * Rysowanie wyznaczonego kształtu.
-     * @param canvas przyjmuje warstwę dla obiektu.
+     *
+     * @param canvas warstwa do rysowania.
      */
     void drawShape(Canvas canvas);
-
-    /**
-     * Aktualizacja stanu wczytanego obiektu.
-     */
-    void update(PointF point);
 }
 

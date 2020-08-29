@@ -2,19 +2,21 @@ package pl.lodz.p.embeddedsystems.game.surface.shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
+
+import androidx.annotation.NonNull;
 
 import pl.lodz.p.embeddedsystems.game.model.gameobject.GameObject;
 import pl.lodz.p.embeddedsystems.game.model.shape.Shape;
 
+/**
+ * Kula poruszana przez gracza.
+ */
 public class PlayerBall extends Shape implements GameObject  {
 
     /**
      * Pole zawierające promień kuli.
      */
     private float radius;
-
-
 
     /**
      * Konstruktor przyjmujący środek figury oraz jej promień.
@@ -24,23 +26,30 @@ public class PlayerBall extends Shape implements GameObject  {
      * @param style  zmienna opisująca styl obiektu.
      * @param radius zmienna opisująca promień kuli.
      */
-    public PlayerBall(float x, float y, Paint style, float radius) {
+    public PlayerBall(float x, float y, @NonNull Paint style, float radius) {
         super(x, y, style);
         setMomentumEnabled(true);
         this.radius = radius;
     }
 
+    /**
+     * Zwraca promień kuli.
+     */
     public float getRadius() {
         return radius;
     }
 
+    // -=-=-=-=- >>>GameObject -=-=-=-=-
+
+    /**
+     * Rysuje kształt na planszy.
+     *
+     * @param canvas warstwa do rysowania.
+     */
     @Override
     public void drawShape(Canvas canvas) {
         canvas.drawCircle(super.getCenterX(), super.getCenterY(), this.radius, super.getStyle());
     }
 
-    @Override
-    public void update(PointF point) {
-        super.setCenter(point);
-    }
+    // -=-=-=-=- <<<GameObject -=-=-=-=-
 }

@@ -1,10 +1,10 @@
 package pl.lodz.p.embeddedsystems;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     PropertyChangeSupport propertyChangeSupport;
 
     /**
-     * Przy instancjonowaniu klasy dodajemy obiekt jako bean.
+     * Przy instancjonowaniu klasy tworzymy bean'a.
      */
     public MainActivity() {
         propertyChangeSupport = new PropertyChangeSupport(this);
@@ -38,12 +38,10 @@ public class MainActivity extends AppCompatActivity {
     // -=-=-=-=- >>>AppCompatActivity -=-=-=-=-
 
     /**
-     * Wykonywane przy ładowaniu aplikacji z xml.
-     *
-     * @param savedInstanceState referencja do obiektu tworzonego w onCreate
+     * Wstępnie inicjuje aktywność danymi.
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -55,8 +53,14 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Obsługuje komunikację między aktywnościami i/lub systemem.
+     * Propaguje intent do propertyChangeSupport mającego swoich obserwatorów.
+     *
+     * @param intent obiekt reprezentujacy akcję, do podjęcia przez aplikację
+     */
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
         propertyChangeSupport.firePropertyChange(new PropertyChangeEvent(this, this.getClass().getName(), null, intent));
     }
@@ -65,20 +69,20 @@ public class MainActivity extends AppCompatActivity {
     // -=-=-=-=- >>>PropertyChangeSupport -=-=-=-=-
 
     /**
-     * Dodanie obserwatora dla tej klasy.
+     * Dodanie obserwatora.
      *
-     * @param propertyChangeListener objekt implementujący PropertyChangeListener
+     * @param propertyChangeListener obserwujący do powiadomienia o zmianie wartości
      */
-    public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
+    public void addPropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
         propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
     }
 
     /**
-     * Usunięcie obserwatora dla tej klasy.
+     * Usunięcie obserwatora.
      *
-     * @param propertyChangeListener objekt implementujący PropertyChangeListener
+     * @param propertyChangeListener obserwujący do usunięcia
      */
-    public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
+    public void removePropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
         propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
     }
 

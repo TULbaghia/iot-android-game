@@ -3,14 +3,14 @@ package pl.lodz.p.embeddedsystems.game.thread;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import androidx.annotation.NonNull;
+
 import pl.lodz.p.embeddedsystems.game.surface.GameSurfaceView;
 
 import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
 
 /**
- * Instancje klasy GameThread reprezentują aktualnie przetwarzany wątek gry.
- * TODO: Podczas działania aplikacji, może dojść do zablokowania odświeżenia zablokowanego canvas'a przez co wyrzuca błąd (non-critical)
- * TODO: @up java.lang.IllegalArgumentException: canvas object must be the same instance that was previously returned by lockCanvas
+ * Reprezentuje przetwarzany wątek gry.
  */
 public class GameThread extends Thread {
     /**
@@ -19,7 +19,7 @@ public class GameThread extends Thread {
     private final SurfaceHolder surfaceHolder;
 
     /**
-     * Surface z właściwym wątkiem.
+     * Plansza do gry z właściwym wątkiem.
      */
     private GameSurfaceView gameSurface;
 
@@ -33,11 +33,21 @@ public class GameThread extends Thread {
      */
     private boolean running = false;
 
-    public GameThread(GameSurfaceView gameSurface) {
-        super();
+    public GameThread(@NonNull GameSurfaceView gameSurface) {
         this.gameSurface = gameSurface;
         this.surfaceHolder = gameSurface.getHolder();
     }
+
+    /**
+     * Włącza lub wyłącza przetwarzanie zadań w wątku.
+     *
+     * @param running fałsz w celu zatrzymania przetwarzania
+     */
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    // -=-=-=-=- >>>Thread -=-=-=-=-
 
     /**
      * Przetwarzanie w wątku.
@@ -51,7 +61,6 @@ public class GameThread extends Thread {
             try {
                 canvas = surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
-//                    gameSurface.update();
                     gameSurface.draw(canvas);
                 }
             } catch (Exception e) {
@@ -76,7 +85,5 @@ public class GameThread extends Thread {
         }
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
+    // -=-=-=-=- <<<Thread -=-=-=-=-
 }

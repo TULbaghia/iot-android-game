@@ -4,19 +4,22 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+/**
+ * Klasa reprezentująca kształt na planszy gry.
+ */
 public abstract class Shape {
     /**
-     * Zmienne zawierające środek kształtu.
+     * Zawierają środek kształtu.
      */
     private PointF center;
 
     /**
-     * Zmienna zawierająca styl obiektu.
+     * Zawierająca styl obiektu.
      */
     private Paint style;
 
     /**
-     * Zmienna dozwolone wartości dla punktu środka.
+     * Zawiera dozwolone wartości dla punktu środka.
      */
     private RectF allowedValues;
 
@@ -33,7 +36,7 @@ public abstract class Shape {
     /**
      * Mnożnik momentu pędu.
      */
-    private final float momentumFactor = 1.0f;
+    private final float momentumFactor = .75f;
 
     /**
      * Konstruktor przyjmujący środek figury oraz styl.
@@ -74,28 +77,28 @@ public abstract class Shape {
     }
 
     /**
-     * @return styl obiektu
+     * Zwraca styl obiektu
      */
     public Paint getStyle() {
         return this.style;
     }
 
     /**
-     * @return środek kształtu w danej orientacji.
+     * Zwraca środek kształtu w danej orientacji.
      */
     public PointF getCenter() {
         return center;
     }
 
     /**
-     * @return współrzędna x środka obiektu w danej orientacji.
+     * Zwraca współrzędną x środka obiektu w danej orientacji.
      */
     public float getCenterX() {
         return this.center.x;
     }
 
     /**
-     * @return współrzędna y środka obiektu w danej orientacji.
+     * Zwraca współrzędną y środka obiektu w danej orientacji.
      */
     public float getCenterY() {
         return this.center.y;
@@ -133,7 +136,7 @@ public abstract class Shape {
     }
 
     /**
-     * Funkcja ustawiająca maksymalne, dozwolone wartości wartości.
+     * Ustawia maksymalne dozwolone wartości wartości.
      *
      * @param maxWidth maksymalna wartość na osi x.
      * @param maxHeigh maksymalna wartość na osi y.
@@ -145,7 +148,7 @@ public abstract class Shape {
 
 
     /**
-     * Funkcja ustawiająca minimalne, dozwolone wartości wartości.
+     * Ustawia minimalne dozwolone wartości.
      *
      * @param minWidth minimalna wartość na osi x.
      * @param minHeigh minimalna wartość na osi y.
@@ -156,7 +159,7 @@ public abstract class Shape {
     }
 
     /**
-     * Funkcja zwracająca ograniczające obszar gry wartości.
+     * Zwraca wartości ograniczające obszar gry.
      *
      * @return ograniczające wartości obszaru gry.
      */
@@ -165,7 +168,7 @@ public abstract class Shape {
     }
 
     /**
-     * Funkcja sprawdzająca czy punkt znajduje się w dozwolonych wartościach.
+     * Sprawdza czy punkt znajduje się w dozwolonych wartościach.
      *
      * @param x wartość na osi x
      * @param y wartość na osi y
