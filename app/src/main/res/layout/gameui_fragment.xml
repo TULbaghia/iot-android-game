@@ -11,6 +11,18 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/gameUI__SignificantMotion"
+        android:textSize="30sp"
+        android:textFontWeight="900"
+        android:textColor="#fff"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="end"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

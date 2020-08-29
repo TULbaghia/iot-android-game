@@ -44,5 +44,10 @@ public class GameUIFragment extends Fragment {
                 .observe(this.getViewLifecycleOwner(), data ->
                         ((TextView) view.findViewById(R.id.gameUI__Score)).setText("Punkty: " + data)
                 );
+
+        this.gameSurfaceViewModel.getSignificantMotion()
+                .observe(this.getViewLifecycleOwner(), data ->
+                        ((TextView) view.findViewById(R.id.gameUI__SignificantMotion)).setText("SM: " + data)
+                );
     }
 }

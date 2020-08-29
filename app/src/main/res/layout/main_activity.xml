@@ -4,6 +4,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -84,6 +85,13 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/rotationFragment"
             android:name="pl.lodz.p.embeddedsystems.game.fragment.sensor.RotationFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/significantMotionSensorFragment"
+            android:name="pl.lodz.p.embeddedsystems.game.fragment.sensor.SignificantMotionSensorFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="gone" />

@@ -24,6 +24,8 @@ public class GameSurfaceViewModel extends AndroidViewModel {
 
     private MutableLiveData<Integer> rotation;
 
+    private MutableLiveData<Integer> significantMotion;
+
 
     public GameSurfaceViewModel(@NonNull Application application) {
         super(application);
@@ -81,5 +83,12 @@ public class GameSurfaceViewModel extends AndroidViewModel {
             this.rotation = new MutableLiveData<>(0);
         }
         return this.rotation;
+    }
+
+    public MutableLiveData<Integer> getSignificantMotion(){
+        if (null == this.significantMotion) {
+            this.significantMotion = new MutableLiveData<>(0);
+        }
+        return this.significantMotion;
     }
 }
