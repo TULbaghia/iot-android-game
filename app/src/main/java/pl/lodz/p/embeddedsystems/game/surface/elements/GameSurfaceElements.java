@@ -52,20 +52,8 @@ public class GameSurfaceElements {
     prepareGameObjects();
     setObservers(context);
 
-    // możliwe scenariusze startowe:
-    // a) sytuacja gdy podczas ładowania gry na starcie (biały ekran przed narysowaniem pierwszej
-    // klatki) zmieniono orientację (widoczna zmiana np. na górnym toolbarze w androidzie),
-    // - jest to sytuacja typowa, gdy aplikacja startuje na telefonie
-    // b) sytuacja gdy już podczas ładowania ustawiony jest tryb landscape (np. podczas debuga)
-
-    // sprawdzenie, czy tryb "landscape" byl wlaczony juz przed wlaczeniem aplikacji
     lastKnownRotation = ((Activity) context).getWindowManager().getDefaultDisplay().getRotation();
 
-    // jesli tak, to chcemy aby zaraz po utworzeniu obiektów gry względem trybu "portrait"
-    // została triggerowana akcja zmiany rotacji ekranu na "landscape" lub "reverse landscape",
-    // a zatem dokonane odpowiednie przekształcenie
-    // wszystko to ma na celu uzyskanie sytuacji, w której dokonujemy rotacji punktu względem
-    // defaultowego trybu "portrait"
     if (lastKnownRotation != Surface.ROTATION_0) {
       gameSurfaceViewModel.getRotation().setValue(lastKnownRotation);
     }
