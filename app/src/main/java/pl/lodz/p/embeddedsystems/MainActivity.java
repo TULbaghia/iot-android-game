@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -74,19 +75,19 @@ public class MainActivity extends AppCompatActivity {
      * @param propertyChangeListener obserwujący do powiadomienia o zmianie wartości
      */
     public void addPropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
-        propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+        if(!Arrays.asList(propertyChangeSupport.getPropertyChangeListeners()).contains(propertyChangeListener)) {
+            propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+        }
     }
 
-// --Commented out by Inspection START (30.08.20 14:05):
-//    /**
-//     * Usunięcie obserwatora.
-//     *
-//     * @param propertyChangeListener obserwujący do usunięcia
-//     */
-//    public void removePropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
-//        propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
-//    }
-// --Commented out by Inspection STOP (30.08.20 14:05):
+    /**
+     * Usunięcie obserwatora.
+     *
+     * @param propertyChangeListener obserwujący do usunięcia
+     */
+    public void removePropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
+        propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+    }
 
     // -=-=-=-=- <<<PropertyChangeSupport -=-=-=-=-
 

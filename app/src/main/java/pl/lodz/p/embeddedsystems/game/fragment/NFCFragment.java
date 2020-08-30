@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +22,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import pl.lodz.p.embeddedsystems.MainActivity;
+import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
 /**
@@ -64,6 +68,41 @@ public class NFCFragment extends Fragment implements PropertyChangeListener {
             Toast.makeText(this.getContext(), "To urządzenie wspiera NFC.", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    /**
+     * Podczepienie layoutu pod widok.
+     *
+     * @param inflater           pozwala załadować xml aby otrzymać widok
+     * @param container          grupa widoków
+     * @param savedInstanceState referencja do obiektu podawanego przez system w onCreate
+     * @return widok nfc
+     */
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.sensor_fragment, container, false);
+    }
+
+    /**
+     * Po stworzeniu widoku podczepia obiekt jako obserwatora Intent.
+     *
+     * @param view widok
+     * @param savedInstanceState referencja do obiektu podawanego przez system w onCreate
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((MainActivity) Objects.requireNonNull(this.getContext())).addPropertyChangeListener(this);
+    }
+
+    /**
+     * Usuwa obserwatora podczas niszczenia widoku.
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) Objects.requireNonNull(this.getContext())).removePropertyChangeListener(this);
     }
 
     /**
