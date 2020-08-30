@@ -17,64 +17,65 @@ import java.text.MessageFormat;
 import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
-/**
- * Fragment realizujący interfejs użytkownika.
- */
+/** Fragment realizujący interfejs użytkownika. */
 public class GameUIFragment extends Fragment {
 
-    private GameSurfaceViewModel gameSurfaceViewModel = null;
+  private GameSurfaceViewModel gameSurfaceViewModel = null;
 
-    // -=-=-=-=- >>>Fragment -=-=-=-=-
+  // -=-=-=-=- >>>Fragment -=-=-=-=-
 
-    /**
-     * Wstępnie inicjuje fragment danymi.
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
+  /** Wstępnie inicjuje fragment danymi. */
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.setRetainInstance(true);
 
-        assert this.getContext() != null;
+    assert this.getContext() != null;
 
-        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
-    }
+    this.gameSurfaceViewModel =
+        new ViewModelProvider((ViewModelStoreOwner) this.getContext())
+            .get(GameSurfaceViewModel.class);
+  }
 
-    /**
-     * Stworzenie widoku dla fragmentu.
-     */
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gameui_fragment, container, false);
-    }
+  /** Stworzenie widoku dla fragmentu. */
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.gameui_fragment, container, false);
+  }
 
+  /** Po stworzeniu widoku. Dodanie elementów interfejsu jako obserwatorów. */
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
-    /**
-     * Po stworzeniu widoku.
-     * Dodanie elementów interfejsu jako obserwatorów.
-     */
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    this.gameSurfaceViewModel
+        .getGainedScore()
+        .observe(
+            this.getViewLifecycleOwner(),
+            data ->
+                ((TextView) view.findViewById(R.id.gameUI__Score))
+                    .setText(MessageFormat.format("{0}: {1}", getString(R.string.uiPoints), data)));
 
-        this.gameSurfaceViewModel.getGainedScore().observe(this.getViewLifecycleOwner(), data ->
-                ((TextView) view.findViewById(R.id.gameUI__Score)).setText(
-                        MessageFormat.format("{0}: {1}", getString(R.string.uiPoints), data)
-                )
-        );
+    this.gameSurfaceViewModel
+        .getStepCounter()
+        .observe(
+            this.getViewLifecycleOwner(),
+            data ->
+                ((TextView) view.findViewById(R.id.gameUI__StepCounter))
+                    .setText(MessageFormat.format("{0}: {1}", getString(R.string.uiStep), data)));
 
-        this.gameSurfaceViewModel.getStepCounter().observe(this.getViewLifecycleOwner(), data ->
-                ((TextView) view.findViewById(R.id.gameUI__StepCounter)).setText(
-                        MessageFormat.format("{0}: {1}", getString(R.string.uiStep), data)
-                )
-        );
+    this.gameSurfaceViewModel
+        .getSignificantMotion()
+        .observe(
+            this.getViewLifecycleOwner(),
+            data ->
+                ((TextView) view.findViewById(R.id.gameUI__SignificantMotion))
+                    .setText(MessageFormat.format("{0}: {1}", getString(R.string.uiSigMo), data)));
+  }
 
-        this.gameSurfaceViewModel.getSignificantMotion().observe(this.getViewLifecycleOwner(), data ->
-                ((TextView) view.findViewById(R.id.gameUI__SignificantMotion)).setText(
-                        MessageFormat.format("{0}: {1}", getString(R.string.uiSigMo), data)
-                )
-        );
-    }
-
-    // -=-=-=-=- <<<Fragment -=-=-=-=-
+  // -=-=-=-=- <<<Fragment -=-=-=-=-
 }

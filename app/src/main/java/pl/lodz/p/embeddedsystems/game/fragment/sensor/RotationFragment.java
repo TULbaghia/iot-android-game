@@ -12,57 +12,54 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
-/**
- * Fragment wyznaczający obrót ekranu.
- */
+/** Fragment wyznaczający obrót ekranu. */
 public class RotationFragment extends Fragment {
 
-    private GameSurfaceViewModel gameSurfaceViewModel = null;
+  private GameSurfaceViewModel gameSurfaceViewModel = null;
 
-    private OrientationEventListener orientationEventListener = null;
+  private OrientationEventListener orientationEventListener = null;
 
-    // -=-=-=-=- >>>Fragment -=-=-=-=-
+  // -=-=-=-=- >>>Fragment -=-=-=-=-
 
-    /**
-     * Wstępnie inicjuje fragment danymi oraz obserwatora zmiany obrotu ekranu.
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
+  /** Wstępnie inicjuje fragment danymi oraz obserwatora zmiany obrotu ekranu. */
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.setRetainInstance(true);
 
-        assert getContext() != null;
+    assert getContext() != null;
 
-        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
-        this.orientationEventListener = new OrientationEventListener(this.getContext()) {
-            @Override
-            public void onOrientationChanged(int i) {
-                assert getContext() != null;
-                gameSurfaceViewModel.getRotation().setValue(
-                        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
-                                .getDefaultDisplay().getRotation()
-                );
-            }
+    this.gameSurfaceViewModel =
+        new ViewModelProvider((ViewModelStoreOwner) this.getContext())
+            .get(GameSurfaceViewModel.class);
+    this.orientationEventListener =
+        new OrientationEventListener(this.getContext()) {
+          @Override
+          public void onOrientationChanged(int i) {
+            assert getContext() != null;
+            gameSurfaceViewModel
+                .getRotation()
+                .setValue(
+                    ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
+                        .getDefaultDisplay()
+                        .getRotation());
+          }
         };
-    }
+  }
 
-    /**
-     * Zatrzymanie obserwatora gdy fragment jest wstrzymany.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        orientationEventListener.disable();
-    }
+  /** Zatrzymanie obserwatora gdy fragment jest wstrzymany. */
+  @Override
+  public void onPause() {
+    super.onPause();
+    orientationEventListener.disable();
+  }
 
-    /**
-     * Przywracanie/tworzenie obserwatora, gdy fragment jest wykorzystywany.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        orientationEventListener.enable();
-    }
+  /** Przywracanie/tworzenie obserwatora, gdy fragment jest wykorzystywany. */
+  @Override
+  public void onResume() {
+    super.onResume();
+    orientationEventListener.enable();
+  }
 
-    // -=-=-=-=- <<<Fragment -=-=-=-=-
+  // -=-=-=-=- <<<Fragment -=-=-=-=-
 }

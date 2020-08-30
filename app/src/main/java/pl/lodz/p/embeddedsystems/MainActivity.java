@@ -18,95 +18,91 @@ import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 import java.util.Objects;
 
-/**
- * Główna aktywność aplikacji.
- */
+/** Główna aktywność aplikacji. */
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * Propowanie xml odbywa się przed onCreate głównej aktywności,
-     * używamy tego aby powiadomić obserwatorów.
-     */
-    final PropertyChangeSupport propertyChangeSupport;
+  /**
+   * Propowanie xml odbywa się przed onCreate głównej aktywności, używamy tego aby powiadomić
+   * obserwatorów.
+   */
+  final PropertyChangeSupport propertyChangeSupport;
 
-    /**
-     * Przy instancjonowaniu klasy tworzymy bean'a.
-     */
-    public MainActivity() {
-        propertyChangeSupport = new PropertyChangeSupport(this);
+  /** Przy instancjonowaniu klasy tworzymy bean'a. */
+  public MainActivity() {
+    propertyChangeSupport = new PropertyChangeSupport(this);
+  }
+
+  // -=-=-=-=- >>>AppCompatActivity -=-=-=-=-
+
+  /** Wstępnie inicjuje aktywność danymi. */
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+    this.setContentView(R.layout.main_activity);
+    forceFullScreen();
+
+    propertyChangeSupport.firePropertyChange(
+        new PropertyChangeEvent(this, this.getClass().getName(), null, "onCreate"));
+  }
+
+  /**
+   * Obsługuje komunikację między aktywnościami i/lub systemem. Propaguje intent do
+   * propertyChangeSupport mającego swoich obserwatorów.
+   *
+   * @param intent obiekt reprezentujacy akcję, do podjęcia przez aplikację
+   */
+  @Override
+  protected void onNewIntent(@NonNull Intent intent) {
+    super.onNewIntent(intent);
+    propertyChangeSupport.firePropertyChange(
+        new PropertyChangeEvent(this, this.getClass().getName(), null, intent));
+  }
+
+  // -=-=-=-=- <<<AppCompatActivity -=-=-=-=-
+  // -=-=-=-=- >>>PropertyChangeSupport -=-=-=-=-
+
+  /**
+   * Dodanie obserwatora.
+   *
+   * @param propertyChangeListener obserwujący do powiadomienia o zmianie wartości
+   */
+  public void addPropertyChangeListener(
+      @NonNull final PropertyChangeListener propertyChangeListener) {
+    if (!Arrays.asList(propertyChangeSupport.getPropertyChangeListeners())
+        .contains(propertyChangeListener)) {
+      propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
     }
+  }
 
-    // -=-=-=-=- >>>AppCompatActivity -=-=-=-=-
+  /**
+   * Usunięcie obserwatora.
+   *
+   * @param propertyChangeListener obserwujący do usunięcia
+   */
+  public void removePropertyChangeListener(
+      @NonNull final PropertyChangeListener propertyChangeListener) {
+    propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+  }
 
-    /**
-     * Wstępnie inicjuje aktywność danymi.
-     */
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+  // -=-=-=-=- <<<PropertyChangeSupport -=-=-=-=-
 
-        this.setContentView(R.layout.main_activity);
-        forceFullScreen();
-
-        propertyChangeSupport.firePropertyChange(
-                new PropertyChangeEvent(this, this.getClass().getName(), null, "onCreate")
-        );
+  /**
+   * Wymuś użycie trybu pełnego ekranu. W zależności od wersji systemu używo starego lub nowego API.
+   */
+  private void forceFullScreen() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      Objects.requireNonNull(this.getWindow().getInsetsController())
+          .hide(WindowInsets.Type.statusBars());
+      Objects.requireNonNull(this.getWindow().getInsetsController())
+          .hide(WindowInsets.Type.navigationBars());
+    } else {
+      this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+      this.getWindow()
+          .setFlags(
+              WindowManager.LayoutParams.FLAG_FULLSCREEN,
+              WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
-
-    /**
-     * Obsługuje komunikację między aktywnościami i/lub systemem.
-     * Propaguje intent do propertyChangeSupport mającego swoich obserwatorów.
-     *
-     * @param intent obiekt reprezentujacy akcję, do podjęcia przez aplikację
-     */
-    @Override
-    protected void onNewIntent(@NonNull Intent intent) {
-        super.onNewIntent(intent);
-        propertyChangeSupport.firePropertyChange(new PropertyChangeEvent(this, this.getClass().getName(), null, intent));
-    }
-
-    // -=-=-=-=- <<<AppCompatActivity -=-=-=-=-
-    // -=-=-=-=- >>>PropertyChangeSupport -=-=-=-=-
-
-    /**
-     * Dodanie obserwatora.
-     *
-     * @param propertyChangeListener obserwujący do powiadomienia o zmianie wartości
-     */
-    public void addPropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
-        if(!Arrays.asList(propertyChangeSupport.getPropertyChangeListeners()).contains(propertyChangeListener)) {
-            propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
-        }
-    }
-
-    /**
-     * Usunięcie obserwatora.
-     *
-     * @param propertyChangeListener obserwujący do usunięcia
-     */
-    public void removePropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
-        propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
-    }
-
-    // -=-=-=-=- <<<PropertyChangeSupport -=-=-=-=-
-
-    /**
-     * Wymuś użycie trybu pełnego ekranu.
-     * W zależności od wersji systemu używo starego lub nowego API.
-     */
-    private void forceFullScreen() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Objects.requireNonNull(this.getWindow().getInsetsController()).hide(WindowInsets.Type.statusBars());
-            Objects.requireNonNull(this.getWindow().getInsetsController()).hide(WindowInsets.Type.navigationBars());
-        } else {
-            this.getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            );
-            this.getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN
-            );
-        }
-    }
+  }
 }

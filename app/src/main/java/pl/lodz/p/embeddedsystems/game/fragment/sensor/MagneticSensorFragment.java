@@ -15,71 +15,63 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
-/**
- * Fragment pobierający dane z magnetometru.
- */
+/** Fragment pobierający dane z magnetometru. */
 public class MagneticSensorFragment extends Fragment implements SensorEventListener {
 
-    private SensorManager sensorManager = null;
+  private SensorManager sensorManager = null;
 
-    private GameSurfaceViewModel gameSurfaceViewModel = null;
+  private GameSurfaceViewModel gameSurfaceViewModel = null;
 
-    // -=-=-=-=- >>>Fragment -=-=-=-=-
+  // -=-=-=-=- >>>Fragment -=-=-=-=-
 
-    /**
-     * Wstępnie inicjuje fragment danymi.
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
+  /** Wstępnie inicjuje fragment danymi. */
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.setRetainInstance(true);
 
-        assert this.getContext() != null;
+    assert this.getContext() != null;
 
-        this.sensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
-        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
+    this.sensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
+    this.gameSurfaceViewModel =
+        new ViewModelProvider((ViewModelStoreOwner) this.getContext())
+            .get(GameSurfaceViewModel.class);
+  }
+
+  /** Zatrzymanie obserwatora gdy fragment jest wstrzymany. */
+  @Override
+  public void onPause() {
+    super.onPause();
+    sensorManager.unregisterListener(this);
+  }
+
+  /** Przywracanie/tworzenie obserwatora, gdy fragment jest wykorzystywany. */
+  @Override
+  public void onResume() {
+    super.onResume();
+    sensorManager.registerListener(
+        this,
+        sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+        SensorManager.SENSOR_DELAY_GAME);
+  }
+
+  // -=-=-=-=- <<<Fragment -=-=-=-=-
+  // -=-=-=-=- >>>SensorEventListener -=-=-=-=-
+
+  /**
+   * Aktualizacja wartości czujnika.
+   *
+   * @param sensorEvent zdarzenie zawierające informacje o aktywności sensora.
+   */
+  @Override
+  public void onSensorChanged(@NonNull SensorEvent sensorEvent) {
+    if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+      gameSurfaceViewModel.getMagnetometerValues().setValue(sensorEvent.values);
     }
+  }
 
-    /**
-     * Zatrzymanie obserwatora gdy fragment jest wstrzymany.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        sensorManager.unregisterListener(this);
-    }
+  @Override
+  public void onAccuracyChanged(Sensor sensor, int i) {}
 
-    /**
-     * Przywracanie/tworzenie obserwatora, gdy fragment jest wykorzystywany.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        sensorManager.registerListener(
-                this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                SensorManager.SENSOR_DELAY_GAME
-        );
-    }
-
-    // -=-=-=-=- <<<Fragment -=-=-=-=-
-    // -=-=-=-=- >>>SensorEventListener -=-=-=-=-
-
-    /**
-     * Aktualizacja wartości czujnika.
-     *
-     * @param sensorEvent zdarzenie zawierające informacje o aktywności sensora.
-     */
-    @Override
-    public void onSensorChanged(@NonNull SensorEvent sensorEvent) {
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            gameSurfaceViewModel.getMagnetometerValues().setValue(sensorEvent.values);
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-
-    // -=-=-=-=- <<<SensorEventListener -=-=-=-=-
+  // -=-=-=-=- <<<SensorEventListener -=-=-=-=-
 }

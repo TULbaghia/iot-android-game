@@ -14,83 +14,79 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
-/**
- * Fragment zliczający ruch urządzenia.
- */
+/** Fragment zliczający ruch urządzenia. */
 public class SignificantMotionSensorFragment extends Fragment {
 
-    private SensorManager sensorManager = null;
+  private SensorManager sensorManager = null;
 
-    private GameSurfaceViewModel gameSurfaceViewModel = null;
+  private GameSurfaceViewModel gameSurfaceViewModel = null;
 
-    private Sensor sensor;
+  private Sensor sensor;
 
-    private TriggerEventListener triggerEventListener;
+  private TriggerEventListener triggerEventListener;
 
-    // -=-=-=-=- >>>Fragment -=-=-=-=-
+  // -=-=-=-=- >>>Fragment -=-=-=-=-
 
-    /**
-     * Wstępnie inicjuje fragment danymi oraz czujnik ruchu.
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
+  /** Wstępnie inicjuje fragment danymi oraz czujnik ruchu. */
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.setRetainInstance(true);
 
-        assert getContext() != null;
+    assert getContext() != null;
 
-        this.sensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
-        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
-        this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
+    this.sensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
+    this.gameSurfaceViewModel =
+        new ViewModelProvider((ViewModelStoreOwner) this.getContext())
+            .get(GameSurfaceViewModel.class);
+    this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
+  }
+
+  /** Zatrzymanie obserwatora gdy fragment jest wstrzymany. */
+  @Override
+  public void onPause() {
+    super.onPause();
+    if (this.sensor != null) {
+      sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
     }
+  }
 
-    /**
-     * Zatrzymanie obserwatora gdy fragment jest wstrzymany.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(this.sensor != null) {
-            sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
-        }
+  /** Zatrzymanie obserwatora gdy fragment jest niszczony. */
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (this.sensor != null) {
+      sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
     }
+  }
 
-    /**
-     * Zatrzymanie obserwatora gdy fragment jest niszczony.
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(this.sensor != null) {
-            sensorManager.cancelTriggerSensor(this.triggerEventListener, this.sensor);
-        }
+  /** Przywracanie/tworzenie obserwatora, gdy fragment jest wykorzystywany. */
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (this.sensor != null) {
+      registerSensorListener();
     }
+  }
 
-    /**
-     * Przywracanie/tworzenie obserwatora, gdy fragment jest wykorzystywany.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(this.sensor != null) {
+  // -=-=-=-=- <<<Fragment -=-=-=-=-
+
+  /** Rejestrowanie obserwatora dla zdarzenia. */
+  private void registerSensorListener() {
+    this.triggerEventListener =
+        new TriggerEventListener() {
+          @Override
+          public void onTrigger(TriggerEvent triggerEvent) {
+            gameSurfaceViewModel
+                .getSignificantMotion()
+                .setValue(
+                    gameSurfaceViewModel.getNonNullValueOf(
+                            gameSurfaceViewModel.getSignificantMotion())
+                        + 1);
             registerSensorListener();
-        }
-    }
-
-    // -=-=-=-=- <<<Fragment -=-=-=-=-
-
-    /**
-     * Rejestrowanie obserwatora dla zdarzenia.
-     */
-    private void registerSensorListener() {
-        this.triggerEventListener = new TriggerEventListener() {
-            @Override
-            public void onTrigger(TriggerEvent triggerEvent) {
-                gameSurfaceViewModel.getSignificantMotion().setValue(gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getSignificantMotion()) + 1);
-                registerSensorListener();
-            }
+          }
         };
 
-        sensorManager.requestTriggerSensor(this.triggerEventListener, this.sensor);
-    }
+    sensorManager.requestTriggerSensor(this.triggerEventListener, this.sensor);
+  }
 }

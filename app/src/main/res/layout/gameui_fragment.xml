@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/gameUI__Score"
-        android:textSize="30sp"
-        android:textFontWeight="900"
-        android:textColor="#fff"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="start"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:textColor="#fff"
+        android:textFontWeight="900"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/gameUI__StepCounter"
-        android:textSize="30sp"
-        android:textFontWeight="900"
-        android:textColor="#fff"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="end"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:textColor="#fff"
+        android:textFontWeight="900"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/gameUI__SignificantMotion"
-        android:textSize="30sp"
-        android:textFontWeight="900"
-        android:textColor="#fff"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="end"/>
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:textColor="#fff"
+        android:textFontWeight="900"
+        android:textSize="30sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
