@@ -10,12 +10,23 @@ import pl.lodz.p.embeddedsystems.game.surface.shapes.ScoringZone;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
+/**
+ * Sprawdza warunki gry.
+ */
 public class GameSurfaceConditions {
 
-    public static final int POINTS_INC = 1;
+    private static final int POINTS_INC = 1;
 
-    public static final int SCORING_ZONE_LIMIT = 100;
+    private static final int SCORING_ZONE_LIMIT = 100;
 
+    /**
+     * Sprawdza żywotność strefy i zmienia jej położenie.
+     *
+     * @param scoringZone strefa w której ma znaleźć się kulka.
+     * @param playerBall kulka sterowana przez gracza
+     * @param currentPoints aktualnie posiadane punkty
+     * @return prawdę jeżeli kulka jest w strefie
+     */
     public static boolean checkRules(ScoringZone scoringZone, PlayerBall playerBall, Integer currentPoints) {
         if (isInRange(scoringZone, playerBall)) {
             final float probability = 0.01f;
@@ -34,17 +45,29 @@ public class GameSurfaceConditions {
         return false;
     }
 
+    /**
+     * Sprawdza czy kula znajduje się w strefie.
+     *
+     * @param scoringZone strefa w której ma znaleźć się kulka.
+     * @param playerBall kulka sterowana przez gracza
+     * @return prawdę gdy kulka jest wewnątrz strefy.
+     */
     public static boolean isInRange(ScoringZone scoringZone, PlayerBall playerBall) {
         return scoringZone.getRadius() > (
                 sqrt(pow(playerBall.getCenterX() - scoringZone.getCenterX(), 2) +
                         pow(playerBall.getCenterY() - scoringZone.getCenterY(), 2)) + playerBall.getRadius());
     }
 
-
+    /**
+     * Zwraca podstawową ilość punktów do przyznania.
+     */
     public static int getPointsInc() {
         return POINTS_INC;
     }
 
+    /**
+     * Zwraca ograniczenie dla stefy.
+     */
     public static int getScoringZoneLimit() {
         return SCORING_ZONE_LIMIT;
     }

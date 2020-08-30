@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
-
 import pl.lodz.p.embeddedsystems.game.surface.elements.GameSurfaceElements;
 import pl.lodz.p.embeddedsystems.game.thread.GameThread;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;

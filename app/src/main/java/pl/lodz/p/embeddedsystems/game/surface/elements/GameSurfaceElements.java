@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import pl.lodz.p.embeddedsystems.game.surface.elements.creator.CreatorUtils;
 import pl.lodz.p.embeddedsystems.game.surface.elements.creator.ElementsCreator;
@@ -51,11 +51,6 @@ public class GameSurfaceElements {
      * Poprzednia wartość rotacji ekranu.
      */
     private int lastKnownRotation;
-
-    /**
-     * Generator liczb pseudolosowych.
-     */
-    private Random random = new Random(System.currentTimeMillis());
 
     /**
      * Inicjuje dane w obiekcie.
@@ -191,10 +186,16 @@ public class GameSurfaceElements {
                 );
     }
 
+    /**
+     * Zwraca obiekt gracza.
+     */
     public PlayerBall getPlayer() {
         return playerBall;
     }
 
+    /**
+     * Zwraca obiekt strefy.
+     */
     public ScoringZone getScoringZone() {
         return scoringZone;
     }
@@ -219,7 +220,7 @@ public class GameSurfaceElements {
     }
 
     /**
-     * Tworzy obiekt poruszany przez gracza
+     * Tworzy obiekt poruszany przez gracza.
      *
      * @param x      współrzędna osi X
      * @param y      współrzędma pso Y
@@ -261,7 +262,7 @@ public class GameSurfaceElements {
         if (this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getCheatModeEnabled())) {
             this.gameSurfaceViewModel.getGainedScore().setValue(
                     this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore())
-                            + random.nextInt(80) + 20
+                            + ThreadLocalRandom.current().nextInt(80) + 20
             );
         }
     }
