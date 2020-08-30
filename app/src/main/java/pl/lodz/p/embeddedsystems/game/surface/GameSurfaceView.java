@@ -1,5 +1,6 @@
 package pl.lodz.p.embeddedsystems.game.surface;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -91,6 +93,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             this.gameSurfaceViewElements.getScoringZone().drawShape(canvas);
             this.gameSurfaceViewElements.getPlayer().drawShape(canvas);
         }
+    }
+
+    /**
+     * Łapie i propaguje zdarzenie dotknięcia ekranu.
+     *
+     * @param event zdarzenie dotknięcia ekranu.
+     * @return prawdę jeżeli zdarzenie zostało obsłużone
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
+        gameSurfaceViewElements.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     // -=-=-=-=- <<<SurfaceView -=-=-=-=-

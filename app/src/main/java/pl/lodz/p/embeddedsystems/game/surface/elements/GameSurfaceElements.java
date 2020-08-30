@@ -6,12 +6,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.Surface;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+
+import java.util.Random;
 
 import pl.lodz.p.embeddedsystems.game.surface.elements.creator.CreatorUtils;
 import pl.lodz.p.embeddedsystems.game.surface.elements.creator.ElementsCreator;
@@ -48,6 +51,11 @@ public class GameSurfaceElements {
      * Poprzednia wartość rotacji ekranu.
      */
     private int lastKnownRotation;
+
+    /**
+     * Generator liczb pseudolosowych.
+     */
+    private Random random = new Random(System.currentTimeMillis());
 
     /**
      * Inicjuje dane w obiekcie.
@@ -124,7 +132,7 @@ public class GameSurfaceElements {
     private void setNfcActionObserver(@NonNull Context context) {
         this.gameSurfaceViewModel.getCheatModeEnabled()
                 .observe((LifecycleOwner) context, isCheatMode -> {
-                    if(isCheatMode) {
+                    if (isCheatMode) {
                         playerBall.setMomentumEnabled(false);
                     } else {
                         playerBall.setMomentumEnabled(true);
@@ -244,4 +252,17 @@ public class GameSurfaceElements {
         playerBall.setMaxValues(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
 
+    /**
+     * Łapie zdarzenie dotknięcia ekranu i je obsługuje.
+     *
+     * @param event zdarzenie dotknięcia ekranu.
+     */
+    public void onTouchEvent(@NonNull MotionEvent event) {
+        if (this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getCheatModeEnabled())) {
+            this.gameSurfaceViewModel.getGainedScore().setValue(
+                    this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore())
+                            + random.nextInt(80) + 20
+            );
+        }
+    }
 }
