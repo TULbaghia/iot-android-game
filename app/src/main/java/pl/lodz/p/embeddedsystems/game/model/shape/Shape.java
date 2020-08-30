@@ -36,7 +36,7 @@ public abstract class Shape {
     /**
      * Mnożnik momentu pędu.
      */
-    private final float momentumFactor = .75f;
+    private final float momentumFactor = 1f;
 
     /**
      * Konstruktor przyjmujący środek figury oraz styl.
@@ -126,11 +126,11 @@ public abstract class Shape {
                 momentum[1] = 0f;
             }
         } else {
-            if (isInRange(this.center.x + dx, this.center.y)) {
-                this.center.offset(dx, 0);
+            if (isInRange(this.center.x + dx*20, this.center.y)) {
+                this.center.offset(dx*20, 0);
             }
-            if (isInRange(this.center.x, this.center.y + dy)) {
-                this.center.offset(0, dy);
+            if (isInRange(this.center.x, this.center.y + -dy*20)) {
+                this.center.offset(0, -dy*20);
             }
         }
     }

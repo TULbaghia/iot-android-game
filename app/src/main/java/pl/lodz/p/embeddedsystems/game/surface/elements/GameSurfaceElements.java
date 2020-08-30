@@ -20,33 +20,40 @@ import pl.lodz.p.embeddedsystems.game.surface.shapes.PlayerBall;
 import pl.lodz.p.embeddedsystems.game.surface.shapes.ScoringZone;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
+/**
+ * Zawiera oraz zarządza elementami na planszy gry.
+ */
 public class GameSurfaceElements {
     /**
-     * Obiekt-kształt gracza.
+     * Kształt gracza.
      */
     private PlayerBall playerBall;
 
     /**
-     * Obiekt-kształt punktowanej strefy.
+     * Kształt punktowanej strefy.
      */
     private ScoringZone scoringZone;
 
     /**
      * Referencja do planszy gry.
      */
-    GameSurfaceViewModel gameSurfaceViewModel;
-
+    private GameSurfaceViewModel gameSurfaceViewModel;
 
     /**
      * Parametry wyświetlania, funkcje: konstruowanie obiektów, ustalanie pozycji.
      */
-    DisplayMetrics displayMetrics;
+    private DisplayMetrics displayMetrics;
 
     /**
      * Poprzednia wartość rotacji ekranu.
      */
-    int lastKnownRotation;
+    private int lastKnownRotation;
 
+    /**
+     * Inicjuje dane w obiekcie.
+     *
+     * @param context kontekst aplikacji (obiekt aktywności)
+     */
     public GameSurfaceElements(@NonNull Context context) {
         gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(GameSurfaceViewModel.class);
         displayMetrics = new DisplayMetrics();
@@ -67,28 +74,42 @@ public class GameSurfaceElements {
         // jesli tak, to chcemy aby zaraz po utworzeniu obiektów gry względem trybu "portrait"
         // została triggerowana akcja zmiany rotacji ekranu na "landscape" lub "reverse landscape", a zatem dokonane odpowiednie przekształcenie
         // wszystko to ma na celu uzyskanie sytuacji, w której dokonujemy rotacji punktu względem defaultowego trybu "portrait"
-        if(lastKnownRotation != Surface.ROTATION_0) {
+        if (lastKnownRotation != Surface.ROTATION_0) {
             gameSurfaceViewModel.getRotation().setValue(lastKnownRotation);
         }
     }
 
-
+    /**
+     * Ustala kolejnych obserwatorów.
+     *
+     * @param context kontekst aplikacji (obiekt aktywności)
+     */
     private void setObservers(@NonNull Context context) {
         setRotationObserver(context);
         setPlayerObserver(context);
+        setNfcActionObserver(context);
     }
 
     /**
-     * Obserwator położenia pozycji gracza.
+     * Ustawienie obserwatora położenia pozycji gracza.
+     * Przelicza punkty.
+     *
+     * @param context kontekst aplikacji (obiekt aktywności)
      */
-    private void setPlayerObserver(Context context) {
+    private void setPlayerObserver(@NonNull Context context) {
         this.gameSurfaceViewModel.getOrientationValues()
                 .observe((LifecycleOwner) context, orientatedData -> {
                     if (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getIsStarted())) {
                         getPlayer().moveBy(orientatedData[2], orientatedData[1]);
                         if (GameSurfaceConditions.checkRules(scoringZone, playerBall, this.gameSurfaceViewModel.getGainedScore().getValue())) {
+                            float steps = this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getStepCounter()) / 200f;
+
+                            int significantMotion = this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getSignificantMotion());
+
+                            int newPoints = (int) (GameSurfaceConditions.getPointsInc() * Math.max(1, steps - significantMotion));
+
                             this.gameSurfaceViewModel.getGainedScore().setValue(
-                                    this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + GameSurfaceConditions.getPointsInc()
+                                    this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore()) + newPoints
                             );
                         }
                     }
@@ -96,31 +117,49 @@ public class GameSurfaceElements {
     }
 
     /**
-     * Obserwator aktualnej rotacji ekranu urządzenia.
+     * Ustawienie akcji dla trybu oszusta.
+     *
+     * @param context kontekst aplikacji (obiekt aktywności)
      */
-    private void setRotationObserver(Object context) {
+    private void setNfcActionObserver(@NonNull Context context) {
+        this.gameSurfaceViewModel.getCheatModeEnabled()
+                .observe((LifecycleOwner) context, isCheatMode -> {
+                    if(isCheatMode) {
+                        playerBall.setMomentumEnabled(false);
+                    } else {
+                        playerBall.setMomentumEnabled(true);
+                    }
+                });
+    }
+
+    /**
+     * Ustawienie obserwatora rotacji ekranu urządzenia.
+     *
+     * @param context kontekst aplikacji (obiekt aktywności)
+     */
+    private void setRotationObserver(@NonNull Context context) {
         this.gameSurfaceViewModel.getRotation()
                 .observe((LifecycleOwner) context, rotation -> {
 
-                    ((Activity) context).getWindowManager()
-                            .getDefaultDisplay()
-                            .getMetrics(displayMetrics);
+                            ((Activity) context).getWindowManager()
+                                    .getDefaultDisplay()
+                                    .getMetrics(displayMetrics);
 
                             if (rotation == Surface.ROTATION_0 && lastKnownRotation != Surface.ROTATION_0) {
-                                if(lastKnownRotation == Surface.ROTATION_90){
+                                if (lastKnownRotation == Surface.ROTATION_90) {
                                     getScoringZone().setCenter(new PointF(displayMetrics.heightPixels - getScoringZone().getCenterY(), getScoringZone().getCenterX()));
                                     getPlayer().setCenter(new PointF(displayMetrics.heightPixels - getPlayer().getCenterY(), getPlayer().getCenterX()));
                                     swapAllowedValues();
-                                } else if(lastKnownRotation == Surface.ROTATION_270){
-                                    getScoringZone().setCenter(new PointF( getScoringZone().getCenterY(), displayMetrics.widthPixels - getScoringZone().getCenterX()));
-                                    getPlayer().setCenter(new PointF( getPlayer().getCenterY(), displayMetrics.widthPixels - getPlayer().getCenterX()));
+                                } else if (lastKnownRotation == Surface.ROTATION_270) {
+                                    getScoringZone().setCenter(new PointF(getScoringZone().getCenterY(), displayMetrics.widthPixels - getScoringZone().getCenterX()));
+                                    getPlayer().setCenter(new PointF(getPlayer().getCenterY(), displayMetrics.widthPixels - getPlayer().getCenterX()));
                                     swapAllowedValues();
                                 }
 
                             } else if (rotation == Surface.ROTATION_180 && lastKnownRotation != Surface.ROTATION_180) {
                                 //
                             } else if (rotation == Surface.ROTATION_90 && lastKnownRotation != Surface.ROTATION_90) {
-                                if(lastKnownRotation == Surface.ROTATION_0) {
+                                if (lastKnownRotation == Surface.ROTATION_0) {
                                     getScoringZone().setCenter(new PointF(getScoringZone().getCenterY(), displayMetrics.widthPixels - getScoringZone().getCenterX()));
                                     getPlayer().setCenter(new PointF(getPlayer().getCenterY(), displayMetrics.widthPixels - getPlayer().getCenterX()));
                                     swapAllowedValues();
@@ -129,9 +168,9 @@ public class GameSurfaceElements {
                                     getPlayer().setCenter(new PointF(displayMetrics.widthPixels - getPlayer().getCenterX(), displayMetrics.heightPixels - getPlayer().getCenterY()));
                                 }
                             } else if (rotation == Surface.ROTATION_270 && lastKnownRotation != Surface.ROTATION_270) {
-                                if(lastKnownRotation == Surface.ROTATION_0){
+                                if (lastKnownRotation == Surface.ROTATION_0) {
                                     getScoringZone().setCenter(new PointF(displayMetrics.heightPixels - getScoringZone().getCenterY(), getScoringZone().getCenterX()));
-                                    getPlayer().setCenter(new PointF(displayMetrics.heightPixels - getPlayer().getCenterY(),getPlayer().getCenterX()));
+                                    getPlayer().setCenter(new PointF(displayMetrics.heightPixels - getPlayer().getCenterY(), getPlayer().getCenterX()));
                                     swapAllowedValues();
                                 } else {
                                     getScoringZone().setCenter(new PointF(displayMetrics.widthPixels - getScoringZone().getCenterX(), displayMetrics.heightPixels - getScoringZone().getCenterY()));
@@ -144,24 +183,6 @@ public class GameSurfaceElements {
                 );
     }
 
-    private void prepareGameObjects() {
-        createPlayer(displayMetrics.widthPixels / 2f, displayMetrics.heightPixels / 2f, 70);
-        createScoringZone(displayMetrics.widthPixels / 3f, displayMetrics.heightPixels / 5f, 160);
-        setMaxAllowedValues();
-    }
-
-    public void createPlayer(float x, float y, float radius) {
-        playerBall = ElementsCreator.createBall(x, y,
-                CreatorUtils.getPaint(Paint.Style.FILL, Color.RED),
-                radius);
-    }
-
-    public void createScoringZone(float x, float y, float radius) {
-        scoringZone = ElementsCreator.createScoringZone(x, y,
-                CreatorUtils.getPaint(Paint.Style.FILL, Color.YELLOW),
-                radius);
-    }
-
     public PlayerBall getPlayer() {
         return playerBall;
     }
@@ -171,7 +192,7 @@ public class GameSurfaceElements {
     }
 
     private void swapAllowedValues() {
-        if(playerBall.getAllowedValues().right == displayMetrics.heightPixels && playerBall.getAllowedValues().bottom == displayMetrics.widthPixels) {
+        if (playerBall.getAllowedValues().right == displayMetrics.heightPixels && playerBall.getAllowedValues().bottom == displayMetrics.widthPixels) {
             scoringZone.setMaxValues(displayMetrics.widthPixels, displayMetrics.heightPixels);
             playerBall.setMaxValues(displayMetrics.widthPixels, displayMetrics.heightPixels);
         } else {
@@ -180,6 +201,44 @@ public class GameSurfaceElements {
         }
     }
 
+    /**
+     * Przygotowuje obiekty na planszy.
+     */
+    private void prepareGameObjects() {
+        createPlayer(displayMetrics.widthPixels / 2f, displayMetrics.heightPixels / 2f, 70);
+        createScoringZone(displayMetrics.widthPixels / 3f, displayMetrics.heightPixels / 5f, 160);
+        setMaxAllowedValues();
+    }
+
+    /**
+     * Tworzy obiekt poruszany przez gracza
+     *
+     * @param x      współrzędna osi X
+     * @param y      współrzędma pso Y
+     * @param radius promień obiektu
+     */
+    public void createPlayer(float x, float y, float radius) {
+        playerBall = ElementsCreator.createBall(x, y,
+                CreatorUtils.getPaint(Paint.Style.FILL, Color.RED),
+                radius);
+    }
+
+    /**
+     * Tworzy strefę na planszy gry.
+     *
+     * @param x      współrzędna osi X
+     * @param y      współrzędma pso Y
+     * @param radius promień obiektu
+     */
+    public void createScoringZone(float x, float y, float radius) {
+        scoringZone = ElementsCreator.createScoringZone(x, y,
+                CreatorUtils.getPaint(Paint.Style.FILL, Color.YELLOW),
+                radius);
+    }
+
+    /**
+     * Ustawia dozwolone wartości dla obiektów gry.
+     */
     private void setMaxAllowedValues() {
         scoringZone.setMaxValues(displayMetrics.widthPixels, displayMetrics.heightPixels);
         playerBall.setMaxValues(displayMetrics.widthPixels, displayMetrics.heightPixels);
