@@ -44,38 +44,47 @@ public class GameSurfaceViewModel extends AndroidViewModel {
     return Objects.requireNonNull(item.getValue());
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<float[]> getMagnetometerValues() {
     return this.magnetometerValues;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<float[]> getAccelerometerValues() {
     return this.accelerometerValues;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<float[]> getOrientationValues() {
     return this.orientationValues;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<Boolean> getCheatModeEnabled() {
     return this.cheatModeEnabled;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<Integer> getGainedScore() {
     return this.gainedScore;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<Boolean> getIsStarted() {
     return this.isStarted;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<Integer> getRotation() {
     return this.rotation;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<Integer> getSignificantMotion() {
     return this.significantMotion;
   }
 
+  /** Zwraca typ umożliwiający aktualizację/pobieranie danych oraz obserwowanie zmian. */
   public MutableLiveData<Integer> getStepCounter() {
     return this.stepCounter;
   }

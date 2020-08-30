@@ -256,6 +256,7 @@ public class GameSurfaceElements {
     return scoringZone;
   }
 
+  /** Zamienia dozwolone wartości przy obrocie ekranu */
   @SuppressWarnings("SuspiciousNameCombination")
   private void swapAllowedValues() {
     if (playerBall.getAllowedValues().right == displayMetrics.heightPixels

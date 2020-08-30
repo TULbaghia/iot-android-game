@@ -26,7 +26,7 @@ import pl.lodz.p.embeddedsystems.R;
 import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
 /** Fragment odpowiada za działanie NFC */
-public class NFCFragment extends Fragment implements PropertyChangeListener {
+public class NfcFragment extends Fragment implements PropertyChangeListener {
 
   /** Referencja do widoku-modelu planszy gry. */
   private GameSurfaceViewModel gameSurfaceViewModel = null;
