@@ -97,8 +97,7 @@ public class GameSurfaceElements {
                 getPlayer().moveBy(orientatedData[2], orientatedData[1]);
                 if (GameSurfaceConditions.checkRules(
                     scoringZone,
-                    playerBall,
-                    this.gameSurfaceViewModel.getGainedScore().getValue())) {
+                    playerBall)) {
                   float steps =
                       this.gameSurfaceViewModel.getNonNullValueOf(
                               this.gameSurfaceViewModel.getStepCounter())
