@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
 import android.view.Surface;
 
 import androidx.annotation.NonNull;
@@ -40,12 +39,12 @@ public class GameSurfaceElements {
     /**
      * Referencja do planszy gry.
      */
-    private GameSurfaceViewModel gameSurfaceViewModel;
+    private final GameSurfaceViewModel gameSurfaceViewModel;
 
     /**
      * Parametry wyświetlania, funkcje: konstruowanie obiektów, ustalanie pozycji.
      */
-    private DisplayMetrics displayMetrics;
+    private final DisplayMetrics displayMetrics;
 
     /**
      * Poprzednia wartość rotacji ekranu.
@@ -256,9 +255,8 @@ public class GameSurfaceElements {
     /**
      * Łapie zdarzenie dotknięcia ekranu i je obsługuje.
      *
-     * @param event zdarzenie dotknięcia ekranu.
      */
-    public void onTouchEvent(@NonNull MotionEvent event) {
+    public void onTouchEvent() {
         if (this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getCheatModeEnabled())) {
             this.gameSurfaceViewModel.getGainedScore().setValue(
                     this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getGainedScore())

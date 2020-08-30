@@ -1,7 +1,6 @@
 package pl.lodz.p.embeddedsystems.game.model.gameobject;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 
 /**
  * Interfejs implementowany przez wszystkie obiekty podlegające aktualizacji w czasie gry.

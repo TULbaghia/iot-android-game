@@ -65,10 +65,12 @@ public class GameSurfaceConditions {
         return POINTS_INC;
     }
 
-    /**
-     * Zwraca ograniczenie dla stefy.
-     */
-    public static int getScoringZoneLimit() {
-        return SCORING_ZONE_LIMIT;
-    }
+// --Commented out by Inspection START (30.08.20 14:04):
+//    /**
+//     * Zwraca ograniczenie dla stefy.
+//     */
+//    public static int getScoringZoneLimit() {
+//        return SCORING_ZONE_LIMIT;
+//    }
+// --Commented out by Inspection STOP (30.08.20 14:04)
 }

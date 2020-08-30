@@ -21,7 +21,7 @@ public class GameThread extends Thread {
     /**
      * Plansza do gry z właściwym wątkiem.
      */
-    private GameSurfaceView gameSurface;
+    private final GameSurfaceView gameSurface;
 
     /**
      * Warstwa na której następuje rysowanie.

@@ -16,17 +16,17 @@ public abstract class Shape {
     /**
      * Zawierająca styl obiektu.
      */
-    private Paint style;
+    private final Paint style;
 
     /**
      * Zawiera dozwolone wartości dla punktu środka.
      */
-    private RectF allowedValues;
+    private final RectF allowedValues;
 
     /**
      * Aktualne wartości pędu.
      */
-    private float[] momentum = {0f, 0f};
+    private final float[] momentum = {0f, 0f};
 
     /**
      * Stan aktywacji funkcji zachowania pędu.
@@ -36,6 +36,7 @@ public abstract class Shape {
     /**
      * Mnożnik momentu pędu.
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private final float momentumFactor = 1f;
 
     /**
@@ -60,12 +61,14 @@ public abstract class Shape {
         this.center = center;
     }
 
-    /**
-     * Ustawienie stylu wizialnego obiektu.
-     */
-    public void setStyle(Paint style) {
-        this.style = style;
-    }
+// --Commented out by Inspection START (30.08.20 14:05):
+//    /**
+//     * Ustawienie stylu wizialnego obiektu.
+//     */
+//    public void setStyle(Paint style) {
+//        this.style = style;
+//    }
+// --Commented out by Inspection STOP (30.08.20 14:05)
 
     /**
      * Ustawienie stanu aktywacji funkcji zachowania pędu.
@@ -83,12 +86,14 @@ public abstract class Shape {
         return this.style;
     }
 
-    /**
-     * Zwraca środek kształtu w danej orientacji.
-     */
-    public PointF getCenter() {
-        return center;
-    }
+// --Commented out by Inspection START (30.08.20 14:05):
+//    /**
+//     * Zwraca środek kształtu w danej orientacji.
+//     */
+//    public PointF getCenter() {
+//        return center;
+//    }
+// --Commented out by Inspection STOP (30.08.20 14:05)
 
     /**
      * Zwraca współrzędną x środka obiektu w danej orientacji.

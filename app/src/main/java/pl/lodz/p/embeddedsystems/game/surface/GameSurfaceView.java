@@ -13,12 +13,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import pl.lodz.p.embeddedsystems.game.surface.elements.GameSurfaceElements;
 import pl.lodz.p.embeddedsystems.game.thread.GameThread;
-import pl.lodz.p.embeddedsystems.game.viewmodel.GameSurfaceViewModel;
 
 /**
  * Plansza przechowująca informacje o rozgrywce.
@@ -29,11 +26,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * Wątek odświeżajacyg planszę gry.
      */
     private GameThread gameThread;
-
-    /**
-     * Widok-model powierzchnia gry.
-     */
-    GameSurfaceViewModel gameSurfaceViewModel = null;
 
     /**
      * Elementy na planszy.
@@ -73,7 +65,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             this.setZOrderOnTop(true);
         }
 
-        this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
         this.gameSurfaceViewElements = new GameSurfaceElements(this.getContext());
     }
 
@@ -103,7 +94,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        gameSurfaceViewElements.onTouchEvent(event);
+        gameSurfaceViewElements.onTouchEvent();
         return super.onTouchEvent(event);
     }
 

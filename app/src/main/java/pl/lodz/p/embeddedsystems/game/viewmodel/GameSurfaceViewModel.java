@@ -17,23 +17,23 @@ public class GameSurfaceViewModel extends AndroidViewModel {
         super(application);
     }
 
-    private MutableLiveData<float[]> magnetometerValues = new MutableLiveData<>(new float[3]);
+    private final MutableLiveData<float[]> magnetometerValues = new MutableLiveData<>(new float[3]);
 
-    private MutableLiveData<float[]> accelerometerValues = new MutableLiveData<>(new float[3]);
+    private final MutableLiveData<float[]> accelerometerValues = new MutableLiveData<>(new float[3]);
 
-    private MutableLiveData<float[]> orientationValues = new MutableLiveData<>(new float[3]);
+    private final MutableLiveData<float[]> orientationValues = new MutableLiveData<>(new float[3]);
 
-    private MutableLiveData<Boolean> cheatModeEnabled = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> cheatModeEnabled = new MutableLiveData<>(false);
 
-    private MutableLiveData<Integer> gainedScore = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> gainedScore = new MutableLiveData<>(0);
 
-    private MutableLiveData<Boolean> isStarted = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> isStarted = new MutableLiveData<>(false);
 
-    private MutableLiveData<Integer> rotation = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> rotation = new MutableLiveData<>(0);
 
-    private MutableLiveData<Integer> significantMotion = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> significantMotion = new MutableLiveData<>(0);
 
-    private MutableLiveData<Integer> stepCounter = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> stepCounter = new MutableLiveData<>(0);
 
     /**
      * Zapewnia, że wartość zwrócona z gettera nie jest nullem,

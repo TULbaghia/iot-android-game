@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
      * Propowanie xml odbywa się przed onCreate głównej aktywności,
      * używamy tego aby powiadomić obserwatorów.
      */
-    PropertyChangeSupport propertyChangeSupport;
+    final PropertyChangeSupport propertyChangeSupport;
 
     /**
      * Przy instancjonowaniu klasy tworzymy bean'a.
@@ -77,14 +77,16 @@ public class MainActivity extends AppCompatActivity {
         propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
     }
 
-    /**
-     * Usunięcie obserwatora.
-     *
-     * @param propertyChangeListener obserwujący do usunięcia
-     */
-    public void removePropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
-        propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
-    }
+// --Commented out by Inspection START (30.08.20 14:05):
+//    /**
+//     * Usunięcie obserwatora.
+//     *
+//     * @param propertyChangeListener obserwujący do usunięcia
+//     */
+//    public void removePropertyChangeListener(@NonNull final PropertyChangeListener propertyChangeListener) {
+//        propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+//    }
+// --Commented out by Inspection STOP (30.08.20 14:05):
 
     // -=-=-=-=- <<<PropertyChangeSupport -=-=-=-=-
 

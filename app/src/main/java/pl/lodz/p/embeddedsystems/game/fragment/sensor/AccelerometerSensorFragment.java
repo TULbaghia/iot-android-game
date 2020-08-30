@@ -93,8 +93,6 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
     private float[] applyRotation(float[] accelerometerValues) {
         float tmp;
         switch (gameSurfaceViewModel.getNonNullValueOf(gameSurfaceViewModel.getRotation())) {
-            case Surface.ROTATION_180:
-                break;
             case Surface.ROTATION_90:
                 tmp = accelerometerValues[0];
                 accelerometerValues[0] = -accelerometerValues[1];
@@ -105,6 +103,7 @@ public class AccelerometerSensorFragment extends Fragment implements SensorEvent
                 accelerometerValues[0] = accelerometerValues[1];
                 accelerometerValues[1] = -tmp;
                 break;
+            case Surface.ROTATION_180:
             default:
                 break;
         }

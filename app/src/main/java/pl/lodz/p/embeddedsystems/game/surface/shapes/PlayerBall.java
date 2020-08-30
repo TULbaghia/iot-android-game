@@ -16,7 +16,7 @@ public class PlayerBall extends Shape implements GameObject  {
     /**
      * Pole zawierające promień kuli.
      */
-    private float radius;
+    private final float radius;
 
     /**
      * Konstruktor przyjmujący środek figury oraz jej promień.
