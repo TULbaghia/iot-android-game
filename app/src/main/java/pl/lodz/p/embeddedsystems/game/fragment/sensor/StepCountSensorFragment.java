@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -42,6 +43,14 @@ public class StepCountSensorFragment extends Fragment implements SensorEventList
 
         this.sensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
         this.gameSurfaceViewModel = new ViewModelProvider((ViewModelStoreOwner) this.getContext()).get(GameSurfaceViewModel.class);
+
+        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ActivityCompat.requestPermissions((Activity) this.getContext(),
+                        new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
+                        1);
+            }
+        }
     }
 
     /**
@@ -62,12 +71,6 @@ public class StepCountSensorFragment extends Fragment implements SensorEventList
         super.onResume();
 
         assert getContext() != null;
-
-        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this.getContext(),
-                    new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
-                    1);
-        }
 
         sensorManager.registerListener(
                 this,

@@ -158,7 +158,7 @@ public class GameSurfaceElements {
                                     swapAllowedValues();
                                 }
 
-                            } else if (rotation == Surface.ROTATION_180 && lastKnownRotation != Surface.ROTATION_180) {
+//                            } else if (rotation == Surface.ROTATION_180 && lastKnownRotation != Surface.ROTATION_180) {
                                 //
                             } else if (rotation == Surface.ROTATION_90 && lastKnownRotation != Surface.ROTATION_90) {
                                 if (lastKnownRotation == Surface.ROTATION_0) {
@@ -254,7 +254,6 @@ public class GameSurfaceElements {
 
     /**
      * Łapie zdarzenie dotknięcia ekranu i je obsługuje.
-     *
      */
     public void onTouchEvent() {
         if (this.gameSurfaceViewModel.getNonNullValueOf(this.gameSurfaceViewModel.getCheatModeEnabled())) {

@@ -60,11 +60,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         this.getHolder().addCallback(this);
         this.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        // TODO: Wsparcie dla rysowania, dla API przed 28-- usunąć w finalnej wersji aplikacji
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            this.setZOrderOnTop(true);
-        }
-
         this.gameSurfaceViewElements = new GameSurfaceElements(this.getContext());
     }
 
